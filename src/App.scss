@@ -1,0 +1,67 @@
+@use "normalize.css";
+@use "skeleton.css";
+
+p {
+  margin: 0;
+}
+
+h1, h2, h3, h4, h5, h6, input[type=button] {
+  margin-bottom: 0;
+}
+
+header {
+  margin-bottom: 1rem;
+  padding: 1rem;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  box-sizing: border-box;
+  align-items: center;
+  box-shadow: 1px 1px 10px 1px #ccc;
+}
+
+.header__auth-status {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px
+}
+
+.header__photo {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+}
+.events {
+  padding: 1rem;
+}
+
+.card {
+  margin-top: 2rem;
+  border-radius: 5px;
+  border: 1px solid #f4f4f4;
+  padding: 1rem;
+  box-shadow: 1px 1px 10px 1px #ccc;
+}
+
+.event__actions {
+  display: flex;
+  gap: 10px;
+}
+
+.event-form__wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.form__wrapper  {
+  flex: 0 0 49%;
+}
+
+.event-form__actions {
+  flex: 0 0 100%;
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
