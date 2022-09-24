@@ -57,6 +57,20 @@ header {
 
 .form__wrapper  {
   flex: 0 0 49%;
+
+  input {
+    width: 100%;
+  }
+}
+
+.form__wrapper-description {
+  flex: 0 0 100%;
+
+  textarea {
+    width: 49%;
+    resize: none;
+    height: 10rem;
+  }
 }
 
 .event-form__actions {

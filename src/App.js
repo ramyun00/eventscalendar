@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import './App.scss';
 import { auth, db } from './firebaseStuff';
-import { getFirestore, collection, getDocs, addDoc, onSnapshot, doc, setDoc, deleteDoc } from 'firebase/firestore';
+import { getFirestore, collection, getDocs, addDoc, onSnapshot, doc, deleteDoc } from 'firebase/firestore';
 import { signInWithPopup, GoogleAuthProvider, signOut } from "firebase/auth";
 
 import EventItem from './EventItem';
@@ -29,7 +29,7 @@ function App() {
       description
     });
 
-    const docRef = doc(collection(db, 'events'));
+    const docRef = collection(db, 'events');
     addDoc(docRef, {
       name,
       date,
@@ -101,7 +101,7 @@ function App() {
             {token ? 
               (
                 <>
-                  <img className="header__photo" src={user.photoURL} />
+                  {user.photoURL ? (<img className="header__photo" src={user.photoURL}/>) : null}
                   <p>{user ?  user.displayName : 'Logged Out'}</p>
                   <input type="button" onClick={handleSignOut} value="Sign Out" />
                 </>
@@ -142,9 +142,9 @@ function App() {
                   <label htmlFor="link">Link (optional):</label>
                   <input type="text" value={link} onChange={e => updateLink(e.target.value)} />
                 </div>
-                <div className="form__wrapper">
-                  <label htmlFor="description">Description</label>
-                  <input type="text" value={description} onChange={e => updateDescription(e.target.value)} />
+                <div className="form__wrapper form__wrapper-description">
+                  <label htmlFor="description">Description:</label>
+                  <textarea value={description} onChange={e => updateDescription(e.target.value)} />
                 </div>
                 <div className="event-form__actions">
                   <input type="submit" value="Submit" className="button-primary" />
