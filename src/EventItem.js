@@ -21,9 +21,13 @@ export default function({event, user}) {
   const handleNotGoing = e => {
     e.preventDefault();
     const docRef = doc(db, 'events', event.id);
+    console.log('user.displayName', user.displayName);
+    const displayName = user.displayName;
+    const person = event.data.going.find(user => user.name === displayName);
+    console.log('person', person);
     try {
       updateDoc(docRef, {
-        going: arrayRemove({name: user.displayName})
+        going: arrayRemove(person)
       })
     } catch (err) {
       alert(err);
