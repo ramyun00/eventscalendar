@@ -6,13 +6,24 @@ import { db } from './firebaseStuff';
 export default function({event, user}) {
   console.log('event item', event);
   console.log('user in event item', user);
+
   const handleGoing = e => {
     e.preventDefault();
     const docRef = doc(db, 'events', event.id);
+    const displayName = user.displayName;
+    const person = event.data.notGoing ? event.data.notGoing.find(user => user.name === displayName) : null;
     try {
-      updateDoc(docRef, {
-        going: arrayUnion({name: user.displayName, time: getDate()})
-      })
+      if (person) {
+        updateDoc(docRef, {
+          going: arrayUnion({name: user.displayName, time: getDate()}),
+          notGoing: arrayRemove(person)
+        })
+      } else {
+        updateDoc(docRef, {
+          going: arrayUnion({name: user.displayName, time: getDate()})
+        });
+      }
+      
     } catch (err) {
       alert(err);
     }
@@ -21,14 +32,21 @@ export default function({event, user}) {
   const handleNotGoing = e => {
     e.preventDefault();
     const docRef = doc(db, 'events', event.id);
-    console.log('user.displayName', user.displayName);
     const displayName = user.displayName;
     const person = event.data.going.find(user => user.name === displayName);
-    console.log('person', person);
     try {
-      updateDoc(docRef, {
-        going: arrayRemove(person)
-      })
+
+      if (person) {
+        updateDoc(docRef, {
+          going: arrayRemove(person),
+          notGoing: arrayUnion(person)
+        });
+      } else {
+        updateDoc(docRef, {
+          notGoing: arrayUnion(person)
+        })
+      }
+      
     } catch (err) {
       alert(err);
     }
@@ -65,7 +83,8 @@ export default function({event, user}) {
         <input type="button" value="Add comment" onClick={handleAddComment}  />
       </div>
       <div className="event__guests">
-        Going: {event.data.going ? event.data.going.map(going => going.name + ' ' + going.time) : 'None'}
+        <p>Going: {event.data.going ? event.data.going.map(going => going.name + ' ' + going.time) : 'None'}</p>
+        <p>Not going: {event.data.notGoing ? event.data.notGoing.map(notGoing => notGoing.name) : 'None'}</p>
       </div>
     </div>
   )
