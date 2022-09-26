@@ -31,6 +31,7 @@ header {
   width: 20px;
   height: 20px;
   object-fit: contain;
+  border-radius: 50%;
 }
 .events {
   padding: 1rem;
@@ -82,4 +83,13 @@ header {
 
 .event__guests p {
   display: block;
+}
+
+.event-item__content {
+  display: flex;
+  justify-content: space-between;
+}
+
+.event-item__delete-button {
+
 }

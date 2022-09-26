@@ -56,6 +56,12 @@ export default function({event, user}) {
 
   }
 
+  const handleDelete = (e) => {
+    e.preventDefault();
+    const docRef = doc(db, 'events', event.id);
+    deleteDoc(docRef);
+  }
+
   const getDate = () => {
     const d = new Date();
     const month = d.getMonth() + 1;
@@ -63,6 +69,7 @@ export default function({event, user}) {
     const year = d.getFullYear();
     return month + '/' + day + '/' + year;
   }
+
   return (
     <div className="event-item card">
       <div className="event-item__content">
@@ -70,11 +77,14 @@ export default function({event, user}) {
           <p>Host: {event.data.name}</p>
           <p>Date: {event.data.date}</p>
           <p>Time: {event.data.time}</p>
+          <p>Address: <a href={`https://maps.google.com/?q=${event.data.address}`} target="_blank">{event.data.address}</a></p>
           <p>Link: {event.data.link}</p>
           <p>Description: {event.description}</p>
         </div>
-        <div>
-          <FontAwesomeIcon icon={faTrashCan} />
+        <div className="event-item__delete" onClick={handleDelete}>
+          <button className="event-item__delete-button">
+            <FontAwesomeIcon icon={faTrashCan} />
+          </button>
         </div>
       </div>
       <div className="event__actions">

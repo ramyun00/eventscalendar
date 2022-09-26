@@ -13,6 +13,7 @@ function App() {
   const [name, updateName] = useState('');
   const [date, updateDate] = useState('');
   const [time, updateTime] = useState('');
+  const [address, updateAddress] = useState('');
   const [link, updateLink] = useState('');
   const [description, updateDescription] = useState('');
   const [user, updateUser] = useState(null);
@@ -21,19 +22,12 @@ function App() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('submit', {
-      name,
-      date,
-      time,
-      link,
-      description
-    });
-
     const docRef = collection(db, 'events');
     addDoc(docRef, {
       name,
       date,
       time,
+      address,
       link,
       description,
     });
@@ -117,7 +111,6 @@ function App() {
           <>
             <h3>Upcoming</h3>
             {events.map(event => {
-              console.log('outer events', events);
               return (
                 <EventItem event={event} user={user} />
               );
@@ -127,16 +120,20 @@ function App() {
               <h3>Add Event</h3>
               <form onSubmit={handleSubmit} className="event-form__wrapper">
                 <div className="form__wrapper">
-                  <label htmlFor="name">Event Host Name/Alias:</label>
+                  <label htmlFor="name">Host Name:</label>
                   <input name="name" type="text" value={name} onChange={e => updateName(e.target.value)} />
                 </div>
                 <div className="form__wrapper">
-                  <label htmlFor="date">Event Date:</label>
+                  <label htmlFor="date">Date:</label>
                   <input type="date" value={date} onChange={e => updateDate(e.target.value)} />
                 </div>
                 <div className="form__wrapper">
-                  <label htmlFor="time">Event Time:</label>
+                  <label htmlFor="time">Time:</label>
                   <input type="text" value={time} onChange={e => updateTime(e.target.value)} />
+                </div>
+                <div className="form__wrapper">
+                  <label htmlFor="time">Address:</label>
+                  <input type="text" value={address} onChange={e => updateAddress(e.target.value)} />
                 </div>
                 <div className="form__wrapper">
                   <label htmlFor="link">Link (optional):</label>
