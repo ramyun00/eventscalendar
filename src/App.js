@@ -3,43 +3,23 @@ import './App.scss';
 import { auth, db } from './firebaseStuff';
 import { getFirestore, collection, getDocs, addDoc, onSnapshot, doc, deleteDoc } from 'firebase/firestore';
 import { signInWithPopup, GoogleAuthProvider, signOut } from "firebase/auth";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Link
+} from "react-router-dom";
 
-import EventItem from './EventItem';
-import EventForm from './EventForm';
+
+import AddNewEvent from './AddNewEvent';
+import Events from './Events';
+
 
 function App() {
   const provider = new GoogleAuthProvider();
-
-  const [name, updateName] = useState('');
-  const [date, updateDate] = useState('');
-  const [time, updateTime] = useState('');
-  const [address, updateAddress] = useState('');
-  const [link, updateLink] = useState('');
-  const [description, updateDescription] = useState('');
   const [user, updateUser] = useState(null);
   const [token, setToken] = useState(null);
   const [events, setEvents] = useState([]);
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const docRef = collection(db, 'events');
-    addDoc(docRef, {
-      name,
-      date,
-      time,
-      address,
-      link,
-      description,
-    });
-  }
-
-  const handleClear = () => {
-    updateName('');
-    updateDate('');
-    updateTime('');
-    updateLink('');
-    updateDescription('');
-  }
 
   const handleSignIn = () => {
     signInWithPopup(auth, provider)
@@ -86,6 +66,7 @@ function App() {
   };
 
   return (
+    <>
     <div>
       <header>
           <div>
@@ -95,64 +76,23 @@ function App() {
             {token ? 
               (
                 <>
-                  {user.photoURL ? (<img className="header__photo" src={user.photoURL}/>) : null}
+                  {user.photoURL ? (<img className="header__photo" src={user.photoURL} referrerPolicy="no-referrer" />) : null}
                   <p>{user ?  user.displayName : 'Logged Out'}</p>
                   <input type="button" onClick={handleSignOut} value="Sign Out" />
                 </>
               )
               : 
               (<input type="button" onClick={handleSignIn} value="Sign In" />)}
-            
           </div>
-          
         </header>
-      <div className="events">
-        {token ? (
-          <>
-            <h3>Upcoming</h3>
-            {events.map(event => {
-              return (
-                <EventItem event={event} user={user} />
-              );
-            })}
-            
-            <div className="card">
-              <h3>Add Event</h3>
-              <form onSubmit={handleSubmit} className="event-form__wrapper">
-                <div className="form__wrapper">
-                  <label htmlFor="name">Host Name:</label>
-                  <input name="name" type="text" value={name} onChange={e => updateName(e.target.value)} />
-                </div>
-                <div className="form__wrapper">
-                  <label htmlFor="date">Date:</label>
-                  <input type="date" value={date} onChange={e => updateDate(e.target.value)} />
-                </div>
-                <div className="form__wrapper">
-                  <label htmlFor="time">Time:</label>
-                  <input type="text" value={time} onChange={e => updateTime(e.target.value)} />
-                </div>
-                <div className="form__wrapper">
-                  <label htmlFor="time">Address:</label>
-                  <input type="text" value={address} onChange={e => updateAddress(e.target.value)} />
-                </div>
-                <div className="form__wrapper">
-                  <label htmlFor="link">Link (optional):</label>
-                  <input type="text" value={link} onChange={e => updateLink(e.target.value)} />
-                </div>
-                <div className="form__wrapper form__wrapper-description">
-                  <label htmlFor="description">Description:</label>
-                  <textarea value={description} onChange={e => updateDescription(e.target.value)} />
-                </div>
-                <div className="event-form__actions">
-                  <input type="submit" value="Submit" className="button-primary" />
-                  <input type="button" value="Clear" onClick={handleClear} />
-                </div>
-              </form>
-            </div>
-          </>
-        ) : null}
-      </div>
     </div>
+    <Router>
+      <Routes>
+        <Route path="/new" element={<AddNewEvent />} />
+        <Route path="/" element={<Events user={user} token={token} events={events} />} />
+      </Routes>
+    </Router>
+    </>
   );
 }
 

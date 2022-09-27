@@ -37,6 +37,11 @@ header {
   padding: 1rem;
 }
 
+.events__header {
+  display: flex;
+  justify-content: space-between;
+}
+
 .card {
   margin-top: 2rem;
   border-radius: 5px;
