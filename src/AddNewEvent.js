@@ -5,6 +5,7 @@ import { db } from './firebaseStuff';
 
 
 export default function() {
+  const [title, setTitle] = useState('');
   const [name, updateName] = useState('');
   const [date, updateDate] = useState('');
   const [time, updateTime] = useState('');
@@ -17,6 +18,7 @@ export default function() {
     e.preventDefault();
     const docRef = collection(db, 'events');
     addDoc(docRef, {
+      title,
       name,
       date,
       time,
@@ -41,6 +43,10 @@ export default function() {
     <div className="card">
       <h3>Add Event</h3>
       <form onSubmit={handleSubmit} className="event-form__wrapper">
+      <div className="form__wrapper">
+          <label htmlFor="name">Event Title:</label>
+          <input name="name" type="text" value={title} onChange={e => setTitle(e.target.value)} />
+        </div>
         <div className="form__wrapper">
           <label htmlFor="name">Host Name:</label>
           <input name="name" type="text" value={name} onChange={e => updateName(e.target.value)} />

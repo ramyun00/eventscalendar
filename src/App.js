@@ -28,7 +28,6 @@ function App() {
       const token = credential.accessToken;
       // The signed-in user info.
       const user = result.user;
-      console.log('token', token, 'user', user);
       updateUser(user);
       setToken(token);
 

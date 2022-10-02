@@ -5,7 +5,6 @@ import { Link } from "react-router-dom";
 import EventItem from './EventItem';
 
 export default function({user, token, events}) {
-  console.log(user, token, events);
   return (
     <div className="events">
       {token ? (
