@@ -3,3 +3,5 @@ node_modules
 .DS_Store
 public
 settings.json
+build/
+functions/firebase-debug.log

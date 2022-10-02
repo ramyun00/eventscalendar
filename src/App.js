@@ -1,13 +1,12 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import './App.scss';
 import { auth, db } from './firebaseStuff';
-import { getFirestore, collection, getDocs, addDoc, onSnapshot, doc, deleteDoc } from 'firebase/firestore';
+import { collection, onSnapshot } from 'firebase/firestore';
 import { signInWithPopup, GoogleAuthProvider, signOut } from "firebase/auth";
 import {
   BrowserRouter as Router,
   Routes,
-  Route,
-  Link
+  Route
 } from "react-router-dom";
 
 

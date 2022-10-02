@@ -2,16 +2,24 @@ import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
 import { getAuth } from "firebase/auth";
 
-const firebaseConfig = {
-  apiKey: process.env.REACT_APP_apiKey,
-  authDomain: process.env.REACT_APP_authDomain,
-  projectId: process.env.REACT_APP_projectId,
-  storageBucket: process.env.REACT_APP_storageBucket,
-  messagingSenderId: process.env.REACT_APP_messagingSenderId,
-  appId: process.env.REACT_APP_appId
-};
+let app;
 
-const app = initializeApp(firebaseConfig);
+if (process.env.NODE_ENV === 'development') {
+  const firebaseConfig = {
+    apiKey: process.env.REACT_APP_APIKEY,
+    authDomain: process.env.REACT_APP_AUTHDOMAIN,
+    projectId: process.env.REACT_APP_PROJECTID,
+    storageBucket: process.env.REACT_APP_STORAGEBUCKET,
+    messagingSenderId: process.env.REACT_APP_MESSAINGSENDERID,
+    appId: process.env.REACT_APP_APPID
+  };
+  app = initializeApp(firebaseConfig);
+} else {
+  fetch('/__/firebase/init.json').then(async response => {
+    app = initializeApp(await response.json());
+  });
+}
+
 const auth = getAuth();
 const db = getFirestore(app);
 
