@@ -53,6 +53,11 @@ header {
 .event__actions {
   display: flex;
   gap: 10px;
+
+  input {
+    width: 49%;
+    max-width: 300px;
+  }
 }
 
 .event-form__wrapper {
@@ -99,4 +104,8 @@ header {
   width: 100%;
   max-width: 400px;
   margin-right: 10px;
+}
+
+.add-new a {
+  text-decoration: none;
 }

@@ -76,6 +76,7 @@ export default function({event, user}) {
       time: getDate(),
       comment: comment
     });
+    setComment('');
   }
 
   const handleDelete = (e) => {
