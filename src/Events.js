@@ -13,7 +13,7 @@ export default function({user, token, events}) {
             <div className="events__header">
               <h3>Upcoming</h3>
               <div className="add-new">
-                <Link to="/new">Add New Event <FontAwesomeIcon icon={faSquarePlus} /></Link>
+                <Link to="/new"><FontAwesomeIcon icon={faSquarePlus} /> Add New Event</Link>
               </div>
             </div>
             {events?.map(event => {

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import './App.scss';
 import { auth, db } from './firebaseStuff';
-import { collection, onSnapshot } from 'firebase/firestore';
+import { collection, onSnapshot, query, orderBy } from 'firebase/firestore';
 import { signInWithPopup, GoogleAuthProvider, signOut } from "firebase/auth";
 import {
   BrowserRouter as Router,
@@ -33,8 +33,8 @@ function App() {
 
       // Get events
       const col = collection(db, 'events');
-
-      onSnapshot(col, (snapshot) => {
+      const q = query(col, orderBy('date'));
+      onSnapshot(q, (snapshot) => {
         let items = [];
         snapshot.forEach(item => {
           items.push({id: item.id, data: item.data()});

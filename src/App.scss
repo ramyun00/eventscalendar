@@ -9,6 +9,10 @@ h1, h2, h3, h4, h5, h6, input[type=button] {
   margin-bottom: 0;
 }
 
+h2 {
+  font-size: 2rem;
+}
+
 header {
   margin-bottom: 1rem;
   padding: 1rem;
@@ -40,6 +44,7 @@ header {
 .events__header {
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }
 
 .card {
@@ -108,4 +113,11 @@ header {
 
 .add-new a {
   text-decoration: none;
+  font-size: 2rem;
+}
+
+@media all and (min-width: 600px) {
+  h2 {
+    font-size: 3.6rem;
+  }
 }
