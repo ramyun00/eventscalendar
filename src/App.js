@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import './App.scss';
 import { auth, db } from './firebaseStuff';
 import { collection, onSnapshot, query, orderBy } from 'firebase/firestore';
@@ -20,6 +20,9 @@ function App() {
   const [token, setToken] = useState(null);
   const [events, setEvents] = useState([]);
 
+  useEffect(() => {
+    console.log('user', user);
+  }, [user])
   const handleSignIn = () => {
     signInWithPopup(auth, provider)
     .then((result) => {
@@ -86,7 +89,7 @@ function App() {
     </div>
     <Router>
       <Routes>
-        <Route path="/new" element={<AddNewEvent />} />
+        <Route path="/new" element={<AddNewEvent user={user} />} />
         <Route path="/" element={<Events user={user} token={token} events={events} />} />
       </Routes>
     </Router>

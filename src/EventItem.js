@@ -105,11 +105,12 @@ export default function({event, user}) {
           <p>Link: {event.data.link}</p>
           <p>Description: {event.description}</p>
         </div>
-        <div className="event-item__delete" onClick={handleDelete}>
-          <button className="event-item__delete-button">
-            <FontAwesomeIcon icon={faTrashCan} />
-          </button>
-        </div>
+        {user.uid === event.data.uid ? (
+          <div className="event-item__delete" onClick={handleDelete}>
+            <button className="event-item__delete-button">
+              <FontAwesomeIcon icon={faTrashCan} />
+            </button>
+          </div>) : null}
       </div>
       <div className="event__actions">
         <input type="button" value="I'm going" onClick={handleGoing} />

@@ -4,7 +4,7 @@ import { addDoc, collection } from 'firebase/firestore';
 import { db } from './firebaseStuff';
 
 
-export default function() {
+export default function({user}) {
   const [title, setTitle] = useState('');
   const [name, updateName] = useState('');
   const [date, updateDate] = useState('');
@@ -18,6 +18,7 @@ export default function() {
     e.preventDefault();
     const docRef = collection(db, 'events');
     addDoc(docRef, {
+      uid: user.uid,
       title,
       name,
       date,
