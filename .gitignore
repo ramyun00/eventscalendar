@@ -1,7 +1,6 @@
 node_modules
 .env
 .DS_Store
-public
 settings.json
 build/
 functions/firebase-debug.log
