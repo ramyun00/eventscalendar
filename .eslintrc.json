@@ -1,0 +1,50 @@
+{
+  "extends": ["airbnb", "airbnb/hooks", "plugin:prettier/recommended"],
+  "plugins": ["react"],
+  "parser": "@babel/eslint-parser",
+  "parserOptions": {
+    "requireConfigFile": false,
+    "sourceType": "module",
+    "babelOptions": {
+      "presets": ["@babel/preset-react"]
+    }
+  },
+  "env": {
+    "browser": true,
+    "es2021": true,
+    "node": true
+  },
+  "rules": {
+    "import/no-named-as-default": 0,
+    "import/no-named-as-default-member": 0,
+    "comma-dangle": ["warn", "only-multiline"],
+    "import/extensions": ["error", "never"],
+    "import/no-unresolved": 0,
+    "jsx-a11y/label-has-associated-control": [
+      2,
+      {
+        "assert": "either"
+      }
+    ],
+    "no-console": "off",
+    "no-nested-ternary": "off",
+    "no-shadow": "off",
+    "no-unused-vars": "warn",
+    "no-use-before-define": "off",
+    "object-curly-newline": [
+      "off",
+      {
+        "ObjectExpression": "always",
+        "ObjectPattern": { "multiline": false },
+        "ImportDeclaration": "never",
+        "ExportDeclaration": { "multiline": true, "minProperties": 3 }
+      }
+    ],
+    "react/no-array-index-key": "off",
+    "react/no-unknown-property": "warn",
+    "react/no-unused-class-component-methods": "warn",
+    "react/no-unused-state": "warn",
+    "react/prop-types": 0,
+    "react/jsx-boolean-value": 0
+  }
+}
