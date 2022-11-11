@@ -1,11 +1,6 @@
 {
-  "extends": [
-    "airbnb",
-    "airbnb/hooks",
-    "plugin:prettier/recommended",
-    "plugin:react-redux/recommended"
-  ],
-  "plugins": ["react", "react-redux"],
+  "extends": ["airbnb", "airbnb/hooks", "plugin:prettier/recommended"],
+  "plugins": ["react"],
   "parser": "@babel/eslint-parser",
   "parserOptions": {
     "requireConfigFile": false,
