@@ -1,6 +1,7 @@
+/* eslint-disable import/no-mutable-exports */
 import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
-import { getAuth } from "firebase/auth";
+import { getAuth } from 'firebase/auth';
 
 let app;
 let db;
@@ -13,19 +14,17 @@ if (process.env.NODE_ENV === 'development') {
     projectId: process.env.REACT_APP_PROJECTID,
     storageBucket: process.env.REACT_APP_STORAGEBUCKET,
     messagingSenderId: process.env.REACT_APP_MESSAINGSENDERID,
-    appId: process.env.REACT_APP_APPID
+    appId: process.env.REACT_APP_APPID,
   };
   app = initializeApp(firebaseConfig);
   db = getFirestore(app);
   auth = getAuth();
 } else {
-  fetch('/__/firebase/init.json').then(async response => {
+  fetch('/__/firebase/init.json').then(async (response) => {
     app = initializeApp(await response.json());
     db = getFirestore(app);
     auth = getAuth();
   });
-  
 }
-
 
 export { auth, db };
