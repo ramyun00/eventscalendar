@@ -22,7 +22,7 @@ export default function Events({ user, token, events }) {
               </Link>
             </div>
           </div>
-          <div className="d-grid two-col row">
+          <div className="events__upcoming d-grid two-col row">
             {events?.map((event, i) => {
               const eventDate = new Date(`${event.data.date}T00:00:00`);
 
@@ -30,6 +30,22 @@ export default function Events({ user, token, events }) {
               if (eventDate.getTime() <= currentDate.getTime()) return false;
 
               return <EventItem event={event} user={user} key={i} />;
+            })}
+          </div>
+          <hr />
+          <div className="events__older-header row d-flex">
+            <h3>Older events</h3>
+          </div>
+          <div className="d-grid two-col row events__older">
+            {events?.map((event, i) => {
+              const eventDate = new Date(`${event.data.date}T00:00:00`);
+
+              // Only show current and future events
+              if (eventDate.getTime() > currentDate.getTime()) return false;
+
+              return (
+                <EventItem event={event} user={user} key={i} oldEvent="true" />
+              );
             })}
           </div>
         </>
