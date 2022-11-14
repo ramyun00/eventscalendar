@@ -5,7 +5,6 @@ import { db } from './firebaseStuff';
 
 export default function AddNewEvent({ user }) {
   const [title, setTitle] = useState('');
-  const [name, updateName] = useState('');
   const [date, updateDate] = useState('');
   const [time, updateTime] = useState('');
   const [address, updateAddress] = useState('');
@@ -19,7 +18,7 @@ export default function AddNewEvent({ user }) {
     addDoc(docRef, {
       uid: user.uid,
       title,
-      name,
+      name: user.displayName,
       date,
       time,
       address,
@@ -30,7 +29,6 @@ export default function AddNewEvent({ user }) {
   };
 
   const handleCancel = () => {
-    updateName('');
     updateDate('');
     updateTime('');
     updateLink('');
@@ -38,17 +36,20 @@ export default function AddNewEvent({ user }) {
     navigate('/');
   };
 
+  const isDisabled = !title || !date || !time || !address || !description;
+
   return (
     <div className="card">
       <h3>Add Event</h3>
       <form onSubmit={handleSubmit} className="event-form__wrapper">
         <div className="form__wrapper">
-          <label htmlFor="name">Event Title:</label>
+          <label htmlFor="title">Event Title:</label>
           <input
-            name="name"
+            name="title"
             type="text"
-            value={title}
+            defaultValue={title}
             onChange={(e) => setTitle(e.target.value)}
+            required
           />
         </div>
         <div className="form__wrapper">
@@ -56,52 +57,64 @@ export default function AddNewEvent({ user }) {
           <input
             name="name"
             type="text"
-            value={name}
-            onChange={(e) => updateName(e.target.value)}
+            defaultValue={user.displayName}
+            disabled
           />
         </div>
         <div className="form__wrapper">
           <label htmlFor="date">Date:</label>
           <input
             type="date"
-            value={date}
+            name="date"
+            defaultValue={date}
             onChange={(e) => updateDate(e.target.value)}
+            required
           />
         </div>
         <div className="form__wrapper">
           <label htmlFor="time">Time:</label>
           <input
             type="text"
-            value={time}
+            name="time"
+            defaultValue={time}
             onChange={(e) => updateTime(e.target.value)}
+            required
           />
         </div>
         <div className="form__wrapper">
-          <label htmlFor="time">Address:</label>
+          <label htmlFor="address">Address:</label>
           <input
             type="text"
-            value={address}
+            name="address"
+            defaultValue={address}
             onChange={(e) => updateAddress(e.target.value)}
+            required
           />
         </div>
         <div className="form__wrapper">
           <label htmlFor="link">Link (optional):</label>
           <input
-            type="text"
-            value={link}
+            type="url"
+            defaultValue={link}
             onChange={(e) => updateLink(e.target.value)}
           />
         </div>
         <div className="form__wrapper form__wrapper-description">
           <label htmlFor="description">Description:</label>
           <textarea
-            value={description}
+            defaultValue={description}
             onChange={(e) => updateDescription(e.target.value)}
+            required
           />
         </div>
         <div className="event-form__actions">
-          <input type="submit" value="Submit" className="button-primary" />
-          <input type="button" value="Cancel" onClick={handleCancel} />
+          <button
+            type="submit"
+            className="button-primary"
+            disabled={isDisabled}>
+            Submit
+          </button>
+          <input type="button" defaultValue="Cancel" onClick={handleCancel} />
         </div>
       </form>
     </div>
