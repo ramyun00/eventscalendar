@@ -1,8 +1,11 @@
 @use 'normalize.css';
 @use 'skeleton.css';
 
-p {
-  margin: 0;
+// Components
+@use 'components/eventItem.scss';
+
+body {
+  box-sizing: border-box;
 }
 
 h1,
@@ -17,6 +20,21 @@ input[type='button'] {
 
 h2 {
   font-size: 2rem;
+}
+
+p {
+  display: block;
+}
+
+.position-absolute {
+  position: absolute;
+}
+
+.container {
+  max-width: 1200px;
+  width: 100%;
+  padding-left: 30px;
+  padding-right: 30px;
 }
 
 header {
@@ -43,9 +61,6 @@ header {
   object-fit: contain;
   border-radius: 50%;
 }
-.events {
-  padding: 1rem;
-}
 
 .events__header {
   display: flex;
@@ -54,21 +69,31 @@ header {
 }
 
 .card {
+  position: relative;
   margin-top: 2rem;
   border-radius: 5px;
   border: 1px solid #f4f4f4;
-  padding: 1rem;
   box-shadow: 1px 1px 10px 1px #ccc;
 }
 
-.event__actions {
-  display: flex;
-  gap: 10px;
+// Grid
+.grid {
+  display: grid;
+  grid-column-gap: 15px;
+  grid-row-gap: 15px;
+}
 
-  input {
-    width: 49%;
-    max-width: 300px;
-  }
+.two-col {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.three-col {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+// Events
+.events {
+  margin: 40px 0;
 }
 
 .event-form__wrapper {
