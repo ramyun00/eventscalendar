@@ -20,6 +20,7 @@ export default function EventDate({ date, time }) {
       <span className="event-item__date-dayname">{dateObj[0]}</span>
       <span className="event-item__date-day">{monthDay[2]}</span>
       <span className="event-item__date-month">{monthDay[1]}</span>
+      {time ? <span className="event-item__date-time">{time}</span> : null}
     </div>
   );
 }

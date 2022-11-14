@@ -20,7 +20,7 @@
   text-align: center;
   color: white;
   width: 90px;
-  height: 108px;
+  height: 120px;
   margin-left: 30px;
 
   .event-item__date-dayname {
@@ -41,6 +41,14 @@
     display: block;
     font-size: 24px;
     line-height: 22px;
+    letter-spacing: 1px;
+  }
+
+  .event-item__date-time {
+    display: block;
+    padding-top: 2px;
+    font-size: 12px;
+    text-transform: uppercase;
     letter-spacing: 1px;
   }
 }
