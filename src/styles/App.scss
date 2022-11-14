@@ -1,11 +1,21 @@
 @use 'normalize.css';
 @use 'skeleton.css';
 
-// Components
-@use 'components/eventItem.scss';
+@use './variables';
+@use './colors';
+@use './utilities';
 
-body {
+// Components
+@use 'components/eventItem';
+
+html {
   box-sizing: border-box;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
 }
 
 h1,
@@ -20,36 +30,44 @@ input[type='button'] {
 
 h2 {
   font-size: 2rem;
+
+  @media all and (min-width: 600px) {
+    font-size: 3.6rem;
+  }
 }
 
 p {
   display: block;
 }
 
-.position-absolute {
-  position: absolute;
+hr {
+  margin: 1rem 0;
 }
 
-.container {
-  max-width: 1200px;
-  width: 100%;
-  padding-left: 30px;
-  padding-right: 30px;
+// Buttons
+button,
+input[type='button'] {
+  color: white;
+
+  &:hover,
+  &:focus {
+    color: white;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+  }
 }
 
+// Layout
 header {
   margin-bottom: 1rem;
-  padding: 1rem;
+  padding: 1rem 30px;
   width: 100%;
-  display: flex;
-  justify-content: space-between;
-  box-sizing: border-box;
-  align-items: center;
-  box-shadow: 1px 1px 10px 1px #ccc;
+  box-shadow: 1px 1px 10px 1px var(--box-shadow-color);
 }
 
 .header__auth-status {
-  display: flex;
   justify-content: center;
   align-items: center;
   gap: 10px;
@@ -62,27 +80,15 @@ header {
   border-radius: 50%;
 }
 
-.events__header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
 .card {
   position: relative;
   margin-top: 2rem;
   border-radius: 5px;
-  border: 1px solid #f4f4f4;
-  box-shadow: 1px 1px 10px 1px #ccc;
+  border: 1px solid var(--border-color);
+  box-shadow: 1px 1px 10px 1px var(--box-shadow-color);
 }
 
 // Grid
-.grid {
-  display: grid;
-  grid-column-gap: 15px;
-  grid-row-gap: 15px;
-}
-
 .two-col {
   grid-template-columns: repeat(2, 1fr);
 }
@@ -94,6 +100,18 @@ header {
 // Events
 .events {
   margin: 40px 0;
+}
+
+.events__header {
+  align-items: center;
+
+  > * {
+    width: 50%;
+  }
+}
+
+.events__upcoming {
+  margin-bottom: 40px;
 }
 
 .event-form__wrapper {
@@ -127,13 +145,12 @@ header {
   justify-content: flex-end;
 }
 
-.event__guests p {
-  display: block;
+.events__older-header {
+  margin-top: 40px;
 }
 
-.event-item__content {
-  display: flex;
-  justify-content: space-between;
+.events__older {
+  opacity: 0.75;
 }
 
 .event__comment-input {
@@ -142,13 +159,7 @@ header {
   margin-right: 10px;
 }
 
-.add-new a {
+.events__header-add-new a {
   text-decoration: none;
   font-size: 2rem;
-}
-
-@media all and (min-width: 600px) {
-  h2 {
-    font-size: 3.6rem;
-  }
 }

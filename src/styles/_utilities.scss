@@ -1,0 +1,63 @@
+// Utility classes
+.d-block {
+  display: block;
+}
+
+.d-inline-block {
+  display: inline-block;
+}
+
+.d-inline {
+  display: inline;
+}
+
+.d-flex {
+  display: flex;
+  justify-content: space-between;
+}
+
+.d-grid {
+  display: grid;
+  grid-column-gap: 15px;
+  grid-row-gap: 15px;
+}
+
+.w-auto {
+  width: auto;
+}
+
+.w-25 {
+  width: 25%;
+}
+
+.w-50 {
+  width: 50%;
+}
+
+.w-75 {
+  width: 75%;
+}
+
+.w-100 {
+  width: 100%;
+}
+
+.position-absolute {
+  position: absolute;
+}
+
+.position-relative {
+  position: relative;
+}
+
+.row {
+  margin: 15px var(--horizontal-spacing) 0;
+}
+
+.text-end {
+  text-align: right;
+}
+
+.text-center {
+  text-align: center;
+}
