@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import './App.scss';
+import './styles/App.scss';
 import { collection, onSnapshot, query, orderBy } from 'firebase/firestore';
 import { signInWithPopup, GoogleAuthProvider, signOut } from 'firebase/auth';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
@@ -15,8 +15,12 @@ function App() {
   const [events, setEvents] = useState([]);
 
   useEffect(() => {
-    console.log('user', user);
-  }, [user]);
+    if (auth.currentUser && !user) {
+      updateUser(auth.currentUser);
+      const credential = GoogleAuthProvider.credentialFromResult(user);
+      setToken(credential.accessToken);
+    }
+  }, [user, token]);
 
   const handleSignIn = () => {
     signInWithPopup(auth, provider)
