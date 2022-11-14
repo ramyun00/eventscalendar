@@ -70,32 +70,40 @@ function App() {
   };
 
   return (
-    <>
-      <div>
-        <header>
-          <div>
-            <h2>Events Calendar</h2>
-          </div>
-          <div className="header__auth-status">
-            {token ? (
-              <>
-                {user.photoURL ? (
-                  <img
-                    className="header__photo"
-                    src={user.photoURL}
-                    referrerPolicy="no-referrer"
-                    alt=""
-                  />
-                ) : null}
-                <p>{user ? user.displayName : 'Logged Out'}</p>
-                <input type="button" onClick={handleSignOut} value="Sign Out" />
-              </>
-            ) : (
-              <input type="button" onClick={handleSignIn} value="Sign In" />
-            )}
-          </div>
-        </header>
-      </div>
+    <main>
+      <header className="d-flex">
+        <div>
+          <h2>Events Calendar</h2>
+        </div>
+        <div className="d-flex header__auth-status">
+          {token ? (
+            <>
+              {user.photoURL ? (
+                <img
+                  className="header__photo"
+                  src={user.photoURL}
+                  referrerPolicy="no-referrer"
+                  alt=""
+                />
+              ) : null}
+              {user ? user.displayName : 'Logged Out'}
+              <input
+                type="button"
+                className="button-primary"
+                onClick={handleSignOut}
+                value="Sign Out"
+              />
+            </>
+          ) : (
+            <input
+              type="button"
+              className="button-primary"
+              onClick={handleSignIn}
+              value="Sign In"
+            />
+          )}
+        </div>
+      </header>
       <Router>
         <Routes>
           <Route path="/new" element={<AddNewEvent user={user} />} />
@@ -105,7 +113,7 @@ function App() {
           />
         </Routes>
       </Router>
-    </>
+    </main>
   );
 }
 
