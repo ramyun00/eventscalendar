@@ -84,17 +84,17 @@ export default function EventItem({ event, oldEvent, user }) {
     }
   };
 
-  const handleAddComment = (e) => {
-    e.preventDefault();
-    const docRef = doc(db, 'events', event.id);
-    const colRef = collection(docRef, 'comments');
-    addDoc(colRef, {
-      author: user.displayName,
-      time: getDate(),
-      comment,
-    });
-    setComment('');
-  };
+  // const handleAddComment = (e) => {
+  //   e.preventDefault();
+  //   const docRef = doc(db, 'events', event.id);
+  //   const colRef = collection(docRef, 'comments');
+  //   addDoc(colRef, {
+  //     author: user.displayName,
+  //     time: getDate(),
+  //     comment,
+  //   });
+  //   setComment('');
+  // };
 
   const handleDelete = (e) => {
     e.preventDefault();
