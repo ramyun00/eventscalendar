@@ -1,0 +1,49 @@
+// Colors
+.text-primary {
+  color: var(--primary);
+}
+
+.text-secondary {
+  color: var(--primary);
+}
+
+.text-danger {
+  color: var(--danger);
+}
+
+.text-warn {
+  color: var(--warn);
+}
+
+.bg-primary {
+  background-color: var(--primary);
+}
+
+.bg-danger {
+  background-color: var(--danger);
+}
+
+.bg-warn {
+  background-color: var(--warn);
+}
+
+button.button-primary,
+input.button-primary {
+  background-color: var(--primary);
+}
+
+.button-secondary {
+  background-color: var(--secondary);
+}
+
+.button-success {
+  background-color: var(--green);
+}
+
+.button-warning {
+  background-color: var(--warn);
+}
+
+.button-danger {
+  background-color: var(--danger);
+}
