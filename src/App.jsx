@@ -15,7 +15,7 @@ function App() {
   const [events, setEvents] = useState([]);
 
   useEffect(() => {
-    if (auth.currentUser && !user) {
+    if (auth?.currentUser && !user) {
       updateUser(auth.currentUser);
       const credential = GoogleAuthProvider.credentialFromResult(user);
       setToken(credential.accessToken);
