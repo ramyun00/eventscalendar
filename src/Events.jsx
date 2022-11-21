@@ -22,7 +22,7 @@ export default function Events({ user, token, events }) {
               </Link>
             </div>
           </div>
-          <div className="events__upcoming d-grid two-col row">
+          <div className="events__upcoming d-grid three-col row">
             {events?.map((event, i) => {
               const eventDate = new Date(`${event.data.date}T00:00:00`);
 
@@ -36,7 +36,7 @@ export default function Events({ user, token, events }) {
           <div className="events__older-header row d-flex">
             <h3>Older events</h3>
           </div>
-          <div className="d-grid two-col row events__older">
+          <div className="d-grid three-col row events__older">
             {events?.map((event, i) => {
               const eventDate = new Date(`${event.data.date}T00:00:00`);
 

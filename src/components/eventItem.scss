@@ -1,7 +1,3 @@
-.event-item {
-  padding-bottom: 50px;
-}
-
 .event-item__header {
   padding: 20px;
 
@@ -16,24 +12,23 @@
 
 .event-item__date-container {
   border-radius: 5px;
-  padding: 10px 5px;
+  padding: 10px 10px;
   text-align: center;
   color: white;
-  width: 90px;
+  width: 102px;
   height: 120px;
   margin-left: 30px;
 
   .event-item__date-dayname {
     display: block;
-    font-size: 10px;
+    font-size: 14px;
     text-transform: uppercase;
-    letter-spacing: 1px;
   }
 
   .event-item__date-day {
     display: block;
-    font-size: 50px;
-    line-height: 48px;
+    font-size: 32px;
+    line-height: 38px;
   }
 
   .event-item__date-month {
@@ -47,16 +42,19 @@
   .event-item__date-time {
     display: block;
     padding-top: 2px;
-    font-size: 12px;
+    font-size: 14px;
     text-transform: uppercase;
     letter-spacing: 1px;
   }
 }
 
 .event-item__content {
-  padding: 20px;
-  height: 150px;
-  overflow-y: auto;
+  padding: 0 20%;
+  margin-bottom: 20px;
+}
+
+.event-item__content-response-icon {
+  margin-right: 15px;
 }
 
 .event-item__description {
@@ -64,20 +62,10 @@
   margin-bottom: 10px;
 }
 
-.event-item__toobar {
-  padding: 0 20px;
-  color: white;
-
-  a {
-    color: white;
-  }
-}
-
 .event__actions {
   display: flex;
   width: 100%;
   gap: 10px;
-  bottom: 0;
   padding: 0 20px;
 
   button:not(.event-item__delete-button) {

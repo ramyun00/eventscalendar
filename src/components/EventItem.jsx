@@ -14,10 +14,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashCan } from '@fortawesome/free-regular-svg-icons';
 import {
   faCheck,
-  faComment,
+  faLocationDot,
+  faMessage,
+  faUserCheck,
+  faUserXmark,
   faXmark,
-  faGlobe,
-  faLink,
 } from '@fortawesome/free-solid-svg-icons';
 import { db } from '../firebaseStuff';
 import EventDate from './EventDate';
@@ -118,76 +119,41 @@ export default function EventItem({ event, oldEvent, user }) {
       <div className="event-item__header">
         <div className="d-flex">
           <div className="event-item__header-info">
-            <h3>{data.title ? data.title : 'New Event'}</h3>
-            <hr />
-            <div className="d-flex">
-              <div className="event-item__header-going">
-                {data.going?.length ? (
-                  <>
-                    <FontAwesomeIcon icon={faCheck} className="text-primary" />{' '}
-                    {data.going.map((going, i) =>
-                      i < 5
-                        ? `${going.name}${
-                            data.going.length > 1 && i !== data.going.length - 1
-                              ? ', '
-                              : ''
-                          }`
-                        : null
-                    )}
-                  </>
-                ) : (
-                  <>
-                    <FontAwesomeIcon icon={faCheck} className="text-primary" />
-                    {' 0'}
-                  </>
-                )}
-                {data.going?.length > 5
-                  ? ` and ${data.going.length - 5} others`
-                  : null}
+            <h5>{data.title ? data.title : 'New Event'}</h5>
+            <div className="event-item__host">Host: {data.name}</div>
+            {data.address ? (
+              <div className="event-item__location">
+                <FontAwesomeIcon icon={faLocationDot} />
+                &nbsp;
+                {data.address}
               </div>
-              <div className="event-item__header-notgoing">
-                <FontAwesomeIcon icon={faXmark} className="text-danger" />{' '}
-                {data.notGoing ? data.notGoing.length : '0'}
-              </div>
-              <div className="event-item__header-comments">
-                <FontAwesomeIcon icon={faComment} className="text-primary" />{' '}
-                {comments ? comments.length : '0'}
-              </div>
-            </div>
+            ) : null}
           </div>
           {data.date ? <EventDate date={data.date} time={data.time} /> : null}
         </div>
       </div>
-      <div className="d-flex event-item__toobar bg-primary">
-        {/* TODO: Replace this with the host's avatar/profile link */}
-        <div className="event-item__toolbar-host">Host: {data.name}</div>
-        {data.address ? (
-          <div className="event-item__toolbar-location">
-            <FontAwesomeIcon icon={faGlobe} />
-            &nbsp;
-            <a
-              href={`https://maps.google.com/?q=${data.address}`}
-              target="_blank"
-              rel="noreferrer">
-              {data.address}
-            </a>
-          </div>
-        ) : null}
-        {data.link ? (
-          <div className="event-item__toolbar-link">
-            <FontAwesomeIcon icon={faLink} />
-            &nbsp;
-            <a
-              href={`https://maps.google.com/?q=${data.link}`}
-              target="_blank"
-              rel="noreferrer">
-              {data.link}
-            </a>
-          </div>
-        ) : null}
-      </div>
-      <div className="event-item__content">
-        <p className="event-item__description">{data.description}</p>
+      <div className="event-item__content d-flex">
+        <div className="event-item__content-going">
+          <FontAwesomeIcon
+            icon={faUserCheck}
+            className="text-success event-item__content-response-icon"
+          />
+          {data.going ? data.going.length : '0'}
+        </div>
+        <div className="event-item__content-notgoing">
+          <FontAwesomeIcon
+            icon={faUserXmark}
+            className="text-danger event-item__content-response-icon"
+          />{' '}
+          {data.notGoing ? data.notGoing.length : '0'}
+        </div>
+        <div className="event-item__content-comments">
+          <FontAwesomeIcon
+            icon={faMessage}
+            className="text-primary event-item__content-response-icon"
+          />{' '}
+          {comments ? comments.length : '0'}
+        </div>
         {/* <p>Comments:</p>
         <div className="event__comments">
           Add comment:{' '}
@@ -216,9 +182,8 @@ export default function EventItem({ event, oldEvent, user }) {
             : null}
         </div> */}
       </div>
-      {!oldEvent ? <hr /> : null}
       {!oldEvent ? (
-        <div className="event__actions position-absolute">
+        <div className="event__actions">
           {user.uid === data.uid ? (
             <button
               className="event-item__delete-button button-warning"
