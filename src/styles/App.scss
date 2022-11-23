@@ -8,6 +8,8 @@
 // Components
 @use 'components/eventItem';
 
+@import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap');
+
 html {
   box-sizing: border-box;
 }
@@ -16,6 +18,11 @@ html {
 *:before,
 *:after {
   box-sizing: inherit;
+}
+
+body {
+  font-family: var(--font-nunito);
+  color: var(--text-color);
 }
 
 h1,
@@ -48,6 +55,7 @@ hr {
 button,
 input[type='button'] {
   color: white;
+  font-size: 14px;
 
   &:hover,
   &:focus {
