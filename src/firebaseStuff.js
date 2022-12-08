@@ -1,7 +1,21 @@
 /* eslint-disable import/no-mutable-exports */
 import { initializeApp } from 'firebase/app';
-import { getFirestore } from 'firebase/firestore';
-import { getAuth } from 'firebase/auth';
+import {
+  getFirestore,
+  query,
+  getDocs,
+  collection,
+  where,
+  addDoc,
+} from 'firebase/firestore';
+import {
+  GoogleAuthProvider,
+  browserLocalPersistence,
+  getAuth,
+  setPersistence,
+  signInWithPopup,
+  signOut,
+} from 'firebase/auth';
 
 let app;
 let db;
@@ -17,14 +31,43 @@ if (process.env.NODE_ENV === 'development') {
     appId: process.env.REACT_APP_APPID,
   };
   app = initializeApp(firebaseConfig);
+  auth = getAuth(app);
   db = getFirestore(app);
-  auth = getAuth();
 } else {
   fetch('/__/firebase/init.json').then(async (response) => {
     app = initializeApp(await response.json());
+    auth = getAuth(app);
     db = getFirestore(app);
-    auth = getAuth();
   });
 }
 
-export { auth, db };
+const googleProvider = new GoogleAuthProvider();
+const signInWithGoogle = async () => {
+  try {
+    const res = await signInWithPopup(auth, googleProvider);
+    const { user } = res;
+    const q = query(collection(db, 'users'), where('uid', '==', user.uid));
+    const docs = await getDocs(q);
+
+    if (docs.docs.length === 0) {
+      await addDoc(collection(db, 'users'), {
+        uid: user.uid,
+        name: user.displayName,
+        authProvider: 'google',
+        email: user.email,
+      });
+    }
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+const logout = () => {
+  signOut(auth);
+};
+
+(async () => {
+  await setPersistence(auth, browserLocalPersistence);
+})();
+
+export { auth, db, signInWithGoogle, logout };

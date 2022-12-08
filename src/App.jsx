@@ -1,73 +1,33 @@
 import React, { useEffect, useState } from 'react';
-import './styles/App.scss';
-import { collection, onSnapshot, query, orderBy } from 'firebase/firestore';
-import { signInWithPopup, GoogleAuthProvider, signOut } from 'firebase/auth';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { collection, onSnapshot, query, orderBy } from 'firebase/firestore';
+import { useAuthState } from 'react-firebase-hooks/auth';
 
-import { auth, db } from './firebaseStuff';
+import { auth, db, logout, signInWithGoogle } from './firebaseStuff';
 import AddNewEvent from './AddNewEvent';
 import Events from './Events';
 
+import './styles/App.scss';
+
 function App() {
-  const provider = new GoogleAuthProvider();
-  const [user, updateUser] = useState(null);
-  const [token, setToken] = useState(null);
+  const [user, loading] = useAuthState(auth);
   const [events, setEvents] = useState([]);
 
   useEffect(() => {
-    if (auth?.currentUser && !user) {
-      updateUser(auth.currentUser);
-      const credential = GoogleAuthProvider.credentialFromResult(user);
-      setToken(credential.accessToken);
-    }
-  }, [user, token]);
-
-  const handleSignIn = () => {
-    signInWithPopup(auth, provider)
-      .then((result) => {
-        // This gives you a Google Access Token. You can use it to access the Google API.
-        const credential = GoogleAuthProvider.credentialFromResult(result);
-        const token = credential.accessToken;
-        // The signed-in user info.
-        const { user } = result;
-        updateUser(user);
-        setToken(token);
-
-        // Get events
-        const col = collection(db, 'events');
-        const q = query(col, orderBy('date'));
-        onSnapshot(q, (snapshot) => {
-          const items = [];
-          snapshot.forEach((item) => {
-            items.push({ id: item.id, data: item.data() });
-          });
-          setEvents(items);
+    if (loading) return;
+    if (user) {
+      // Get events
+      const col = collection(db, 'events');
+      const q = query(col, orderBy('date'));
+      onSnapshot(q, (snapshot) => {
+        const items = [];
+        snapshot.forEach((item) => {
+          items.push({ id: item.id, data: item.data() });
         });
-      })
-      .catch((error) => {
-        // Handle Errors here.
-        const { code, message, customData } = error;
-        // The email of the user's account used.
-        const { email } = customData;
-        // The AuthCredential type that was used.
-        const credential = GoogleAuthProvider.credentialFromError(error);
-        // ...
-        console.log(code, email, message, credential);
+        setEvents(items);
       });
-  };
-
-  const handleSignOut = () => {
-    signOut(auth)
-      .then(() => {
-        // Sign-out successful.
-        updateUser({});
-        setToken(null);
-      })
-      .catch((error) => {
-        // An error happened.
-        console.log(error);
-      });
-  };
+    }
+  }, [user, loading]);
 
   return (
     <main>
@@ -76,7 +36,7 @@ function App() {
           <h2>Events Calendar</h2>
         </div>
         <div className="d-flex header__auth-status">
-          {token ? (
+          {user ? (
             <>
               {user.photoURL ? (
                 <img
@@ -90,7 +50,7 @@ function App() {
               <input
                 type="button"
                 className="button-primary"
-                onClick={handleSignOut}
+                onClick={logout}
                 value="Sign Out"
               />
             </>
@@ -98,7 +58,7 @@ function App() {
             <input
               type="button"
               className="button-primary"
-              onClick={handleSignIn}
+              onClick={signInWithGoogle}
               value="Sign In"
             />
           )}
@@ -107,10 +67,7 @@ function App() {
       <Router>
         <Routes>
           <Route path="/new" element={<AddNewEvent user={user} />} />
-          <Route
-            path="/"
-            element={<Events user={user} token={token} events={events} />}
-          />
+          <Route path="/" element={<Events user={user} events={events} />} />
         </Routes>
       </Router>
     </main>
