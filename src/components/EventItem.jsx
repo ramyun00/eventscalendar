@@ -112,8 +112,6 @@ export default function EventItem({ event, oldEvent, user }) {
     return `${month}/${day}/${year}`;
   };
 
-  console.log(!oldEvent && data.going);
-
   return (
     <div className="event-item card">
       <div className="event-item__header">

@@ -5,14 +5,14 @@ import { faSquarePlus } from '@fortawesome/free-regular-svg-icons';
 import { Link } from 'react-router-dom';
 import EventItem from './components/EventItem';
 
-export default function Events({ user, token, events }) {
+export default function Events({ user, events }) {
   // Set the current date to one day previous to allow for same day events
   const currentDate = new Date();
   currentDate.setDate(currentDate.getDate() - 1);
 
   return (
     <div className="events">
-      {token ? (
+      {events ? (
         <>
           <div className="events__header row d-flex">
             <h3>Upcoming</h3>
