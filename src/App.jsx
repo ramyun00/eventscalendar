@@ -30,6 +30,8 @@ function App() {
     }
   }, [user, loading]);
 
+  if (!user) return false;
+
   return (
     <main>
       <header className="d-flex align-items-center justify-content-between">

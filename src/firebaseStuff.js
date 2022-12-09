@@ -43,6 +43,8 @@ if (process.env.NODE_ENV === 'development') {
 
 const googleProvider = new GoogleAuthProvider();
 const signInWithGoogle = async () => {
+  if (!auth) return;
+
   try {
     const res = await signInWithPopup(auth, googleProvider);
     const { user } = res;
