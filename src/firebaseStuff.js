@@ -18,7 +18,8 @@ import {
 } from 'firebase/auth';
 
 let app;
-const googleProvider = new GoogleAuthProvider();
+let db;
+let auth;
 
 if (process.env.NODE_ENV === 'development') {
   const firebaseConfig = {
@@ -30,15 +31,17 @@ if (process.env.NODE_ENV === 'development') {
     appId: process.env.REACT_APP_APPID,
   };
   app = initializeApp(firebaseConfig);
+  auth = getAuth(app);
+  db = getFirestore(app);
 } else {
   fetch('/__/firebase/init.json').then(async (response) => {
     app = initializeApp(await response.json());
+    auth = getAuth(app);
+    db = getFirestore(app);
   });
 }
 
-const auth = getAuth(app);
-const db = getFirestore(app);
-
+const googleProvider = new GoogleAuthProvider();
 const signInWithGoogle = async () => {
   try {
     const res = await signInWithPopup(auth, googleProvider);
