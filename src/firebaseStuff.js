@@ -51,10 +51,11 @@ const signInWithGoogle = async () => {
 
     if (docs.docs.length === 0) {
       await addDoc(collection(db, 'users'), {
-        uid: user.uid,
-        name: user.displayName,
         authProvider: 'google',
         email: user.email,
+        name: user.displayName,
+        photoURL: user.photoURL,
+        uid: user.uid,
       });
     }
   } catch (err) {
