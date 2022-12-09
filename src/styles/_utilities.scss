@@ -19,6 +19,7 @@
 
 .d-flex {
   display: flex;
+  gap: 10px;
 
   &.justify-content-start {
     justify-content: flex-start;
@@ -38,6 +39,10 @@
 
   &.justify-content-around {
     justify-content: space-around;
+  }
+
+  &.align-items-center {
+    align-items: center;
   }
 }
 
@@ -288,6 +293,11 @@ $spacers: (
 
 .m-4 {
   margin: map.get($spacers, 4);
+}
+
+.mx-auto {
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .mx-0 {

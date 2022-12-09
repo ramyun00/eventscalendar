@@ -124,6 +124,11 @@ header {
   grid-template-columns: repeat(3, 1fr);
 }
 
+.sidebar-layout {
+  grid-template-columns: 1.5fr 1fr;
+  grid-gap: 10px 60px;
+}
+
 // Events
 .events {
   margin: 40px 0;
