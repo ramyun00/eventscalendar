@@ -61,7 +61,7 @@ function App() {
             <input
               type="button"
               className="button-primary"
-              onClick={signInWithGoogle}
+              onClick={signInWithGoogle(auth, db)}
               value="Sign In"
             />
           )}
