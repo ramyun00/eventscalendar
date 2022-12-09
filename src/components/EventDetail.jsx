@@ -1,0 +1,178 @@
+import React, { useEffect, useState } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import {
+  addDoc,
+  collection,
+  doc,
+  getDoc,
+  onSnapshot,
+  serverTimestamp,
+  toDate,
+} from 'firebase/firestore';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import moment from 'moment';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+import { auth, db } from '../firebaseStuff';
+
+export default function EventItem() {
+  const { eventId } = useParams();
+  const [user, loading] = useAuthState(auth);
+  const [event, setEvent] = useState(null);
+  const [comments, setComments] = useState([]);
+  const [comment, setComment] = useState('');
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (loading || !user) return;
+
+    async function fetchData() {
+      // Get event
+      const docRef = doc(db, 'events', eventId);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        setEvent(docSnap.data());
+      } else {
+        console.log('No such document!');
+      }
+
+      const commentsRef = collection(db, 'events', eventId, 'comments');
+
+      onSnapshot(commentsRef, (snapshot) => {
+        const items = [];
+        snapshot.forEach((item) => {
+          items.push({ id: item.id, data: item.data() });
+        });
+        setComments(items);
+      });
+    }
+    fetchData();
+  }, [eventId, loading, user]);
+
+  const handleAddComment = (e) => {
+    e.preventDefault();
+    const docRef = doc(db, 'events', eventId);
+    const colRef = collection(docRef, 'comments');
+    addDoc(colRef, {
+      author: user.displayName,
+      photoURL: user.photoURL,
+      time: serverTimestamp(),
+      comment,
+    });
+    setComment('');
+  };
+
+  if (!event) return false;
+
+  return (
+    <article className="event-detail-container">
+      <button className="btn-link" type="button" onClick={() => navigate(-1)}>
+        <FontAwesomeIcon icon={faArrowLeft} />
+        <span className="d-inline-block ps-2">Back to events</span>
+      </button>
+      <div className="d-grid two-col px-5 pt-3">
+        <div className="event-details">
+          <h2 className="mb-4">{event.title}</h2>
+          <h4>Description</h4>
+          <p className="py-3">{event.description}</p>
+          {event.link ? (
+            <p className="mb-4">
+              <strong className="pe-3">More info:</strong>
+              <a href={event.link} rel="noreferrer" target="_blank">
+                Event Link
+              </a>
+            </p>
+          ) : null}
+          <h4 className="mb-4">
+            Attendees ({event.going?.length})
+            <button type="button" className="btn-link float-right">
+              See more
+            </button>
+          </h4>
+          <div className="event__attendees-group d-flex justify-content-start mb-4">
+            {event.going?.length ? (
+              event.going.map((attendee, i) => {
+                return (
+                  <div
+                    className="event__attendees-item card p-4 text-center"
+                    key={i}>
+                    {attendee.photoURL ? (
+                      <img src={attendee.photoURL} alt="" width="40" />
+                    ) : null}
+                    <span className="d-block">{attendee.name}</span>
+                  </div>
+                );
+              })
+            ) : (
+              <span className="text-muted">None yet</span>
+            )}
+          </div>
+          <h4 className="mb-4">Comments ({comments?.length})</h4>
+          <p>Comments:</p>
+          <div className="event__comments">
+            <div className="event__comments-form d-flex">
+              <img
+                src={user.photoURL}
+                className="img-fluid"
+                width="40px"
+                alt=""
+              />
+              <input
+                type="text"
+                value={comment}
+                onChange={(e) => setComment(e.target.value)}
+                className="event__comment-input m-0 w-100 ms-3 me-4"
+                placeholder="Write a comment"
+              />
+              <button
+                type="button"
+                className="button-primary m-0"
+                value="Add comment"
+                onClick={handleAddComment}
+                disabled={!comment}>
+                Post
+              </button>
+            </div>
+            <section className="event__comments--container mt-4">
+              {comments
+                ? comments.map((comment, i) => {
+                    const timestamp = comment?.data?.time;
+                    const date =
+                      typeof timestamp !== 'string'
+                        ? timestamp.toDate()
+                        : timestamp;
+
+                    return (
+                      <div key={i} className="d-flex mt-2">
+                        {comment.data.photoURL ? (
+                          <div className="comment--avatar me-3">
+                            <img
+                              className="img-fluid"
+                              src={comment.data.photoURL}
+                              alt={comment.data.author}
+                              width="40px"
+                            />
+                          </div>
+                        ) : null}
+                        <div className="comment--details">
+                          <span className="d-block">{comment.data.author}</span>
+                          {date ? (
+                            <small className="d-block text-muted">
+                              {moment(date).startOf('minute').fromNow()}
+                            </small>
+                          ) : null}
+                          <p>{comment.data.comment}</p>
+                        </div>
+                      </div>
+                    );
+                  })
+                : null}
+            </section>
+          </div>
+        </div>
+        <div className="event-map">Map</div>
+      </div>
+    </article>
+  );
+}

@@ -6,6 +6,7 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth, db, logout, signInWithGoogle } from './firebaseStuff';
 import AddNewEvent from './AddNewEvent';
 import Events from './Events';
+import EventDetail from './components/EventDetail';
 
 import './styles/App.scss';
 
@@ -31,9 +32,9 @@ function App() {
 
   return (
     <main>
-      <header className="d-flex">
+      <header className="d-flex align-items-center justify-content-between">
         <div>
-          <h2>Events Calendar</h2>
+          <h1 className="app-title text-uppercase">Events Calendar</h1>
         </div>
         <div className="d-flex header__auth-status">
           {user ? (
@@ -66,8 +67,13 @@ function App() {
       </header>
       <Router>
         <Routes>
+          <Route
+            index
+            path="/"
+            element={<Events user={user} events={events} />}
+          />
+          <Route path="events/:eventId" element={<EventDetail user={user} />} />
           <Route path="/new" element={<AddNewEvent user={user} />} />
-          <Route path="/" element={<Events user={user} events={events} />} />
         </Routes>
       </Router>
     </main>

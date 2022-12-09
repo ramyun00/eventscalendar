@@ -1,0 +1,16 @@
+.event-detail-container {
+  padding: 15px var(--horizontal-spacing);
+}
+
+.event__attendees-group {
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.event__attendees-item {
+  width: 100px;
+
+  > span {
+    font-size: 12px;
+  }
+}
