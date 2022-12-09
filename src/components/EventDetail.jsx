@@ -12,8 +12,9 @@ import {
 import { useAuthState } from 'react-firebase-hooks/auth';
 import moment from 'moment';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+import { faArrowLeft, faLocationDot } from '@fortawesome/free-solid-svg-icons';
 import { auth, db } from '../firebaseStuff';
+import EventDate from './EventDate';
 
 export default function EventItem() {
   const { eventId } = useParams();
@@ -71,7 +72,7 @@ export default function EventItem() {
         <FontAwesomeIcon icon={faArrowLeft} />
         <span className="d-inline-block ps-2">Back to events</span>
       </button>
-      <div className="d-grid two-col px-5 pt-3">
+      <div className="d-grid sidebar-layout px-5 pt-3">
         <div className="event-details">
           <h2 className="mb-4">{event.title}</h2>
           <h4>Description</h4>
@@ -90,7 +91,7 @@ export default function EventItem() {
               See more
             </button>
           </h4>
-          <div className="event__attendees-group d-flex justify-content-start mb-4">
+          <div className="event__attendees-group d-flex justify-content-start mb-4 pb-4">
             {event.going?.length ? (
               event.going.map((attendee, i) => {
                 return (
@@ -171,7 +172,52 @@ export default function EventItem() {
             </section>
           </div>
         </div>
-        <div className="event-map">Map</div>
+        <aside className="event-calendar mt-4">
+          <div className="card mx-4">
+            <div className="d-flex justify-content-between align-items-center mx-4 mt-4 px-2">
+              <div className="event-calendar-date">
+                <EventDate date={event.date} time={event.time} size="sm" />
+              </div>
+              <div className="event-calendar-host d-flex">
+                {event.photoURL ? (
+                  <div>
+                    <img
+                      className="img-fluid me-2"
+                      width="40"
+                      src={event.photoURL}
+                      alt={event.name}
+                    />
+                  </div>
+                ) : null}
+                <div>
+                  <span className="d-block">Hosted by</span>
+                  <small className="d-block text-muted">{event.name}</small>
+                </div>
+              </div>
+            </div>
+            <div className="event-map mt-4">
+              {event.address ? (
+                <>
+                  <div className="mb-4 px-4 mx-4">
+                    <FontAwesomeIcon icon={faLocationDot} />
+                    <span className="ps-4">{event.address}</span>
+                  </div>
+                  <iframe
+                    title={event.address}
+                    width="100%"
+                    height="320"
+                    className="events__details-map-iframe"
+                    referrerPolicy="no-referrer-when-downgrade"
+                    src={`https://www.google.com/maps/embed/v1/place
+                ?key=${process.env.GOOGLE_MAPS_API}
+                &q=${encodeURIComponent(event.address)}`}
+                    allowFullScreen
+                  />
+                </>
+              ) : null}
+            </div>
+          </div>
+        </aside>
       </div>
     </article>
   );

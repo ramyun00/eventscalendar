@@ -48,12 +48,12 @@ function App() {
                 />
               ) : null}
               {user ? user.displayName : 'Logged Out'}
-              <input
+              <button
                 type="button"
-                className="button-primary"
-                onClick={logout}
-                value="Sign Out"
-              />
+                className="button-primary mb-0 ms-4"
+                onClick={logout}>
+                Sign out
+              </button>
             </>
           ) : (
             <input
