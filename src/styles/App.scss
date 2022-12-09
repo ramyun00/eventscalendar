@@ -7,8 +7,9 @@
 
 // Components
 @use 'components/eventItem';
+@use 'components/eventDetail';
 
-@import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&display=swap');
 
 html {
   box-sizing: border-box;
@@ -33,6 +34,7 @@ h5,
 h6,
 input[type='button'] {
   margin-bottom: 0;
+  font-weight: 500;
 }
 
 h2 {
@@ -44,7 +46,7 @@ h2 {
 }
 
 p {
-  display: block;
+  margin-bottom: 1rem;
 }
 
 hr {
@@ -65,6 +67,19 @@ input[type='button'] {
   &:disabled {
     opacity: 0.5;
   }
+
+  &.btn-danger {
+    background-color: var(--danger);
+  }
+
+  &.btn-link {
+    border: 0;
+    padding: 0;
+    color: var(--primary);
+    text-transform: none;
+    letter-spacing: 0;
+    font-weight: normal;
+  }
 }
 
 // Layout
@@ -73,6 +88,11 @@ header {
   padding: 1rem 30px;
   width: 100%;
   box-shadow: 1px 1px 10px 1px var(--box-shadow-color);
+}
+
+.app-title {
+  font-size: 24px;
+  letter-spacing: 1px;
 }
 
 .header__auth-status {
@@ -90,7 +110,6 @@ header {
 
 .card {
   position: relative;
-  margin-top: 2rem;
   border-radius: 5px;
   border: 1px solid var(--border-color);
   box-shadow: 1px 1px 10px 1px var(--box-shadow-color);
@@ -159,12 +178,6 @@ header {
 
 .events__older {
   opacity: 0.75;
-}
-
-.event__comment-input {
-  width: 100%;
-  max-width: 400px;
-  margin-right: 10px;
 }
 
 .events__header-add-new a {
