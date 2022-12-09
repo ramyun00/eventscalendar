@@ -16,14 +16,15 @@ export default function AddNewEvent({ user }) {
     e.preventDefault();
     const docRef = collection(db, 'events');
     addDoc(docRef, {
-      uid: user.uid,
-      title,
-      name: user.displayName,
-      date,
-      time,
       address,
-      link,
+      date,
       description,
+      link,
+      name: user.displayName,
+      photoURL: user.photoURL,
+      time,
+      title,
+      uid: user.uid,
     });
     navigate('/');
   };
