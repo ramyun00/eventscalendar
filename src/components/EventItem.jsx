@@ -1,14 +1,14 @@
 /* eslint-disable no-alert */
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import {
-  collection,
-  doc,
-  updateDoc,
   arrayUnion,
   arrayRemove,
+  collection,
   deleteDoc,
-  addDoc,
+  doc,
   onSnapshot,
+  updateDoc,
 } from 'firebase/firestore';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashCan } from '@fortawesome/free-regular-svg-icons';
@@ -26,7 +26,6 @@ import EventDate from './EventDate';
 export default function EventItem({ event, oldEvent, user }) {
   const { data } = event;
   const [comments, setComments] = useState([]);
-  const [comment, setComment] = useState('');
 
   useEffect(() => {
     const commentsRef = collection(db, 'events', event.id, 'comments');
@@ -44,19 +43,20 @@ export default function EventItem({ event, oldEvent, user }) {
     e.preventDefault();
     const docRef = doc(db, 'events', event.id);
     const { displayName } = user;
-    const person = event.data.notGoing
-      ? event.data.notGoing.find((user) => user.name === displayName)
-      : null;
-
+    const person = data.notGoing?.find((user) => user.name === displayName);
     try {
       if (person) {
         updateDoc(docRef, {
-          going: arrayUnion({ name: user.displayName, time: getDate() }),
+          going: arrayUnion(person),
           notGoing: arrayRemove(person),
         });
       } else {
         updateDoc(docRef, {
-          going: arrayUnion({ name: user.displayName, time: getDate() }),
+          going: arrayUnion({
+            name: user.displayName,
+            photoURL: user.photoURL,
+            time: getDate(),
+          }),
         });
       }
     } catch (err) {
@@ -68,7 +68,7 @@ export default function EventItem({ event, oldEvent, user }) {
     e.preventDefault();
     const docRef = doc(db, 'events', event.id);
     const { displayName } = user;
-    const person = data.going.find((user) => user.name === displayName);
+    const person = data.going?.find((user) => user.name === displayName);
     try {
       if (person) {
         updateDoc(docRef, {
@@ -77,25 +77,16 @@ export default function EventItem({ event, oldEvent, user }) {
         });
       } else {
         updateDoc(docRef, {
-          notGoing: arrayUnion(person),
+          notGoing: arrayUnion({
+            name: user.displayName,
+            photoURL: user.photoURL,
+            time: getDate(),
+          }),
         });
       }
     } catch (err) {
       alert(err);
     }
-  };
-
-  // eslint-disable-next-line no-unused-vars
-  const handleAddComment = (e) => {
-    e.preventDefault();
-    const docRef = doc(db, 'events', event.id);
-    const colRef = collection(docRef, 'comments');
-    addDoc(colRef, {
-      author: user.displayName,
-      time: getDate(),
-      comment,
-    });
-    setComment('');
   };
 
   const handleDelete = (e) => {
@@ -117,7 +108,14 @@ export default function EventItem({ event, oldEvent, user }) {
       <div className="event-item__header">
         <div className="d-flex">
           <div className="event-item__header-info">
-            <h5>{data.title ? data.title : 'New Event'}</h5>
+            <h5>
+              <Link
+                to={`/events/${event.id}`}
+                className="text-decoration-none text-muted"
+                title={data.title || 'New Event'}>
+                {data.title ? data.title : 'New Event'}
+              </Link>
+            </h5>
             <div className="event-item__host">Host: {data.name}</div>
             {data.address ? (
               <div className="event-item__location">
@@ -130,7 +128,7 @@ export default function EventItem({ event, oldEvent, user }) {
           {data.date ? <EventDate date={data.date} time={data.time} /> : null}
         </div>
       </div>
-      <div className="event-item__content d-flex">
+      <div className="event-item__content d-flex justify-content-between">
         <div className="event-item__content-going">
           <FontAwesomeIcon
             icon={faUserCheck}
@@ -152,33 +150,6 @@ export default function EventItem({ event, oldEvent, user }) {
           />{' '}
           {comments ? comments.length : '0'}
         </div>
-        {/* <p>Comments:</p>
-        <div className="event__comments">
-          Add comment:{' '}
-          <input
-            type="text"
-            value={comment}
-            onChange={(e) => setComment(e.target.value)}
-            className="event__comment-input"
-            placeholder="Enter your comment"
-          />
-          <input
-            type="button"
-            className="button-primary"
-            value="Add comment"
-            onClick={handleAddComment}
-          />
-          {comments
-            ? comments.map((comment, i) => {
-                return (
-                  <p key={i}>
-                    {comment.data.author} {comment.data.time}{' '}
-                    {comment.data.comment}
-                  </p>
-                );
-              })
-            : null}
-        </div> */}
       </div>
       {!oldEvent ? (
         <div className="event__actions">
