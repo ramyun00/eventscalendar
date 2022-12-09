@@ -33,11 +33,15 @@ if (process.env.NODE_ENV === 'development') {
   app = initializeApp(firebaseConfig);
   auth = getAuth(app);
   db = getFirestore(app);
+  (async () => {
+    await setPersistence(auth, browserLocalPersistence);
+  })();
 } else {
   fetch('/__/firebase/init.json').then(async (response) => {
     app = initializeApp(await response.json());
     auth = getAuth(app);
     db = getFirestore(app);
+    await setPersistence(auth, browserLocalPersistence);
   });
 }
 
@@ -66,9 +70,5 @@ const signInWithGoogle = async (auth, db) => {
 const logout = () => {
   signOut(auth);
 };
-
-(async () => {
-  await setPersistence(auth, browserLocalPersistence);
-})();
 
 export { auth, db, signInWithGoogle, logout };
