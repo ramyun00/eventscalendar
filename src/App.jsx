@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { collection, onSnapshot, query, orderBy } from 'firebase/firestore';
-import { useAuthState } from 'react-firebase-hooks/auth';
 
 import { auth, db, logout, signInWithGoogle } from './firebaseStuff';
 import AddNewEvent from './AddNewEvent';
@@ -11,26 +10,30 @@ import EventDetail from './components/EventDetail';
 import './styles/App.scss';
 
 function App() {
-  const [user, loading] = useAuthState(auth);
   const [events, setEvents] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [user, updateUser] = useState(null);
 
   useEffect(() => {
-    if (loading) return;
-    if (user) {
-      // Get events
-      const col = collection(db, 'events');
-      const q = query(col, orderBy('date'));
-      onSnapshot(q, (snapshot) => {
-        const items = [];
-        snapshot.forEach((item) => {
-          items.push({ id: item.id, data: item.data() });
-        });
-        setEvents(items);
-      });
-    }
-  }, [user, loading]);
+    // Check for Auth persistence
+    auth?.onAuthStateChanged((user) => {
+      if (user && loading) {
+        updateUser(auth.currentUser);
 
-  if (!user) return false;
+        // Get events
+        const col = collection(db, 'events');
+        const q = query(col, orderBy('date'));
+        onSnapshot(q, (snapshot) => {
+          const items = [];
+          snapshot.forEach((item) => {
+            items.push({ id: item.id, data: item.data() });
+          });
+          setEvents(items);
+        });
+      }
+      setLoading(false);
+    });
+  }, [user, events, loading]);
 
   return (
     <main>
@@ -53,17 +56,17 @@ function App() {
               <button
                 type="button"
                 className="button-primary mb-0 ms-4"
-                onClick={logout}>
+                onClick={() => logout(auth)}>
                 Sign out
               </button>
             </>
           ) : (
-            <input
+            <button
               type="button"
-              className="button-primary"
-              onClick={signInWithGoogle(auth, db)}
-              value="Sign In"
-            />
+              className="button-primary mb-0 ms-4"
+              onClick={() => signInWithGoogle(auth, db)}>
+              Sign In
+            </button>
           )}
         </div>
       </header>

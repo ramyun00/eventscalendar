@@ -10,13 +10,12 @@ import {
 } from 'firebase/firestore';
 import {
   GoogleAuthProvider,
-  browserLocalPersistence,
   getAuth,
-  setPersistence,
   signInWithPopup,
   signOut,
 } from 'firebase/auth';
 
+const googleProvider = new GoogleAuthProvider();
 let app;
 let db;
 let auth;
@@ -33,19 +32,14 @@ if (process.env.NODE_ENV === 'development') {
   app = initializeApp(firebaseConfig);
   auth = getAuth(app);
   db = getFirestore(app);
-  (async () => {
-    await setPersistence(auth, browserLocalPersistence);
-  })();
 } else {
   fetch('/__/firebase/init.json').then(async (response) => {
     app = initializeApp(await response.json());
     auth = getAuth(app);
     db = getFirestore(app);
-    await setPersistence(auth, browserLocalPersistence);
   });
 }
 
-const googleProvider = new GoogleAuthProvider();
 const signInWithGoogle = async (auth, db) => {
   try {
     const res = await signInWithPopup(auth, googleProvider);
@@ -67,7 +61,7 @@ const signInWithGoogle = async (auth, db) => {
   }
 };
 
-const logout = () => {
+const logout = (auth) => {
   signOut(auth);
 };
 

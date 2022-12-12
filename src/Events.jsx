@@ -10,7 +10,7 @@ export default function Events({ user, events }) {
   const currentDate = new Date();
   currentDate.setDate(currentDate.getDate() - 1);
 
-  if (!user || events) return false;
+  if (!user || !events) return false;
 
   return (
     <div className="events">
