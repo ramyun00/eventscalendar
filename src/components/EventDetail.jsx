@@ -8,27 +8,23 @@ import {
   getDoc,
   onSnapshot,
   serverTimestamp,
-  toDate,
 } from 'firebase/firestore';
-import { useAuthState } from 'react-firebase-hooks/auth';
 import moment from 'moment';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft, faLocationDot } from '@fortawesome/free-solid-svg-icons';
-import { auth, db } from '../firebaseStuff';
+import { db } from '../firebaseStuff';
 import EventDate from './EventDate';
 
-export default function EventItem() {
+export default function EventDetail({ user }) {
   const { eventId } = useParams();
-  const [user, loading] = useAuthState(auth);
-  const [event, setEvent] = useState(null);
   const [comments, setComments] = useState([]);
   const [comment, setComment] = useState('');
+  const [event, setEvent] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (loading || !user) return;
-
     async function fetchData() {
       // Get event
       const docRef = doc(db, 'events', eventId);
@@ -49,8 +45,12 @@ export default function EventItem() {
         setComments(items);
       });
     }
-    fetchData();
-  }, [eventId, loading, user]);
+
+    if (loading && !event) {
+      fetchData();
+      setLoading(false);
+    }
+  }, [event, eventId, comments, loading]);
 
   const handleAddComment = (e) => {
     e.preventDefault();
