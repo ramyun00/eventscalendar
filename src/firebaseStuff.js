@@ -16,28 +16,32 @@ import {
 } from 'firebase/auth';
 
 const googleProvider = new GoogleAuthProvider();
-let app;
-
-if (process.env.NODE_ENV === 'development') {
-  const firebaseConfig = {
-    apiKey: process.env.REACT_APP_APIKEY,
-    authDomain: process.env.REACT_APP_AUTHDOMAIN,
-    projectId: process.env.REACT_APP_PROJECTID,
-    storageBucket: process.env.REACT_APP_STORAGEBUCKET,
-    messagingSenderId: process.env.REACT_APP_MESSAINGSENDERID,
-    appId: process.env.REACT_APP_APPID,
-  };
-  app = initializeApp(firebaseConfig);
-} else {
-  fetch('/__/firebase/init.json').then(async (response) => {
-    const res = await response.json();
-    console.log(res);
-    app = initializeApp(res);
-  });
-}
-
+const firebaseConfig =
+  process.env.NODE_ENV === 'development'
+    ? {
+        apiKey: process.env.REACT_APP_APIKEY,
+        authDomain: process.env.REACT_APP_AUTHDOMAIN,
+        projectId: process.env.REACT_APP_PROJECTID,
+        storageBucket: process.env.REACT_APP_STORAGEBUCKET,
+        messagingSenderId: process.env.REACT_APP_MESSAINGSENDERID,
+        appId: process.env.REACT_APP_APPID,
+      }
+    : fetch('/__/firebase/init.json').then(async (response) => {
+        await response.json();
+      });
+const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
+
+// if (process.env.NODE_ENV === 'development') {
+//   app = initializeApp(firebaseConfig);
+// } else {
+//   fetch('/__/firebase/init.json').then(async (response) => {
+//     const res = await response.json();
+//     console.log(res);
+//     app = initializeApp(res);
+//   });
+// }
 
 const signInWithGoogle = async () => {
   try {
