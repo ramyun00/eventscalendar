@@ -1,4 +1,3 @@
-/* eslint-disable import/no-mutable-exports */
 import { initializeApp } from 'firebase/app';
 import {
   getFirestore,
@@ -16,6 +15,13 @@ import {
 } from 'firebase/auth';
 
 const googleProvider = new GoogleAuthProvider();
+
+async function getConfig() {
+  const res = await fetch('/__/firebase/init.json');
+  const config = await res.json();
+  return config;
+}
+
 const firebaseConfig =
   process.env.NODE_ENV === 'development'
     ? {
@@ -26,23 +32,12 @@ const firebaseConfig =
         messagingSenderId: process.env.REACT_APP_MESSAINGSENDERID,
         appId: process.env.REACT_APP_APPID,
       }
-    : fetch('/__/firebase/init.json').then(async (response) => {
-        await response.json();
-      });
+    : getConfig();
+
 console.log(firebaseConfig);
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
-
-// if (process.env.NODE_ENV === 'development') {
-//   app = initializeApp(firebaseConfig);
-// } else {
-//   fetch('/__/firebase/init.json').then(async (response) => {
-//     const res = await response.json();
-//     console.log(res);
-//     app = initializeApp(res);
-//   });
-// }
 
 const signInWithGoogle = async () => {
   try {
