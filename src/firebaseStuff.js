@@ -29,6 +29,7 @@ const firebaseConfig =
     : fetch('/__/firebase/init.json').then(async (response) => {
         await response.json();
       });
+console.log(firebaseConfig);
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
