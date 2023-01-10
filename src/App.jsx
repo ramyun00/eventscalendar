@@ -14,10 +14,9 @@ function App() {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
+    console.log(auth.config);
     auth?.onAuthStateChanged((authUser) => {
-      console.log('fired onAuthStateChanged', authUser);
       if (!user && authUser) {
-        console.log('fired user && authUser');
         setUser({
           email: authUser.email,
           displayName: authUser.displayName,
