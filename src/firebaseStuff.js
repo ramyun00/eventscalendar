@@ -17,8 +17,8 @@ import {
 
 const googleProvider = new GoogleAuthProvider();
 let app;
-let db;
-let auth;
+// let db;
+// let auth;
 
 if (process.env.NODE_ENV === 'development') {
   const firebaseConfig = {
@@ -30,19 +30,20 @@ if (process.env.NODE_ENV === 'development') {
     appId: process.env.REACT_APP_APPID,
   };
   app = initializeApp(firebaseConfig);
-  auth = getAuth(app);
-  db = getFirestore(app);
+  // auth = getAuth(app);
+  // db = getFirestore(app);
 } else {
   fetch('/__/firebase/init.json').then(async (response) => {
     const res = await response.json();
     console.log(res);
     app = initializeApp(res);
-    auth = getAuth(app);
-    db = getFirestore(app);
-    console.log(auth);
+    // auth = getAuth(app);
+    // db = getFirestore(app);
   });
 }
-// console.log(auth?.config);
+const auth = getAuth(app);
+const db = getFirestore(app);
+console.log(auth?.config);
 
 const signInWithGoogle = async (auth, db) => {
   try {
