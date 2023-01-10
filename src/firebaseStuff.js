@@ -61,8 +61,8 @@ const signInWithGoogle = async (auth, db) => {
   }
 };
 
-const logout = (auth) => {
+function logout(auth) {
   signOut(auth);
-};
+}
 
 export { auth, db, signInWithGoogle, logout };

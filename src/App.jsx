@@ -11,15 +11,17 @@ import './styles/App.scss';
 
 function App() {
   const [events, setEvents] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [user, updateUser] = useState(null);
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
-    // Check for Auth persistence
-    auth?.onAuthStateChanged((user) => {
-      if (user && loading) {
-        updateUser(auth.currentUser);
-
+    auth?.onAuthStateChanged((authUser) => {
+      if (!user && authUser) {
+        setUser({
+          email: authUser.email,
+          displayName: authUser.displayName,
+          photoURL: authUser.photoURL,
+          uid: authUser.uid,
+        });
         // Get events
         const col = collection(db, 'events');
         const q = query(col, orderBy('date'));
@@ -31,9 +33,8 @@ function App() {
           setEvents(items);
         });
       }
-      setLoading(false);
     });
-  }, [user, events, loading]);
+  }, [user, events]);
 
   return (
     <main>
