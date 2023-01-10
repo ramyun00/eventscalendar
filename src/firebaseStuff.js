@@ -39,6 +39,7 @@ if (process.env.NODE_ENV === 'development') {
     app = initializeApp(res);
     auth = getAuth(app);
     db = getFirestore(app);
+    console.log(auth);
   });
 }
 // console.log(auth?.config);
