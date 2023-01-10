@@ -58,7 +58,7 @@ function App() {
               <button
                 type="button"
                 className="button-primary mb-0 ms-4"
-                onClick={() => logout(auth)}>
+                onClick={() => logout()}>
                 Sign out
               </button>
             </>
@@ -66,7 +66,7 @@ function App() {
             <button
               type="button"
               className="button-primary mb-0 ms-4"
-              onClick={() => signInWithGoogle(auth, db)}>
+              onClick={() => signInWithGoogle()}>
               Sign In
             </button>
           )}
