@@ -35,6 +35,7 @@ if (process.env.NODE_ENV === 'development') {
 } else {
   fetch('/__/firebase/init.json').then(async (response) => {
     const res = await response.json();
+    console.log(res);
     app = initializeApp(res);
     auth = getAuth(app);
     db = getFirestore(app);
