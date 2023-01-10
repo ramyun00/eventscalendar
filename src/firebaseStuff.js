@@ -34,11 +34,13 @@ if (process.env.NODE_ENV === 'development') {
   db = getFirestore(app);
 } else {
   fetch('/__/firebase/init.json').then(async (response) => {
+    console.log(response);
     app = initializeApp(await response.json());
     auth = getAuth(app);
     db = getFirestore(app);
   });
 }
+// console.log(auth?.config);
 
 const signInWithGoogle = async (auth, db) => {
   try {

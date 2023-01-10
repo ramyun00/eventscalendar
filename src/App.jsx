@@ -14,7 +14,7 @@ function App() {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    console.log(auth.config);
+    console.log(auth);
     auth?.onAuthStateChanged((authUser) => {
       if (!user && authUser) {
         setUser({
