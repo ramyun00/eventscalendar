@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { collection, onSnapshot, query, orderBy } from 'firebase/firestore';
+// import { signInWithPopup, GoogleAuthProvider, signOut } from 'firebase/auth';
 
 import { auth, db, logout, signInWithGoogle } from './firebaseStuff';
 import AddNewEvent from './AddNewEvent';
@@ -10,31 +11,42 @@ import EventDetail from './components/EventDetail';
 import './styles/App.scss';
 
 function App() {
+  // const provider = new GoogleAuthProvider();
   const [events, setEvents] = useState([]);
+  // const [token, setToken] = useState(null);
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    console.log(auth);
-    auth?.onAuthStateChanged((authUser) => {
-      if (!user && authUser) {
-        setUser({
-          email: authUser.email,
-          displayName: authUser.displayName,
-          photoURL: authUser.photoURL,
-          uid: authUser.uid,
+    if (auth?.currentUser && !user) {
+      setUser(auth.currentUser);
+      // const credential = GoogleAuthProvider.credentialFromResult(user);
+      // setToken(credential.accessToken);
+    }
+
+    // auth?.onAuthStateChanged((authUser) => {
+    //   if (!user && authUser) {
+    //     setUser({
+    //       email: authUser.email,
+    //       displayName: authUser.displayName,
+    //       photoURL: authUser.photoURL,
+    //       uid: authUser.uid,
+    //     });
+    //   }
+    // });
+
+    // Get events
+    if (user) {
+      const col = collection(db, 'events');
+      const q = query(col, orderBy('date'));
+
+      onSnapshot(q, (snapshot) => {
+        const items = [];
+        snapshot.forEach((item) => {
+          items.push({ id: item.id, data: item.data() });
         });
-        // Get events
-        const col = collection(db, 'events');
-        const q = query(col, orderBy('date'));
-        onSnapshot(q, (snapshot) => {
-          const items = [];
-          snapshot.forEach((item) => {
-            items.push({ id: item.id, data: item.data() });
-          });
-          setEvents(items);
-        });
-      }
-    });
+        setEvents(items);
+      });
+    }
   }, [user, events]);
 
   return (
