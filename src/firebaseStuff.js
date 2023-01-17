@@ -1,3 +1,4 @@
+/* eslint-disable import/no-mutable-exports */
 import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
