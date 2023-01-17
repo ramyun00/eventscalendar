@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { collection, onSnapshot, query, orderBy } from 'firebase/firestore';
-// import { signInWithPopup, GoogleAuthProvider, signOut } from 'firebase/auth';
+import { signInWithPopup, GoogleAuthProvider, signOut } from 'firebase/auth';
 
-import { auth, db, logout, signInWithGoogle } from './firebaseStuff';
+import { auth, db } from './firebaseStuff';
 import AddNewEvent from './AddNewEvent';
 import Events from './Events';
 import EventDetail from './components/EventDetail';
@@ -11,43 +11,73 @@ import EventDetail from './components/EventDetail';
 import './styles/App.scss';
 
 function App() {
-  // const provider = new GoogleAuthProvider();
+  const provider = new GoogleAuthProvider();
   const [events, setEvents] = useState([]);
   // const [token, setToken] = useState(null);
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    if (auth?.currentUser && !user) {
-      setUser(auth.currentUser);
-      // const credential = GoogleAuthProvider.credentialFromResult(user);
-      // setToken(credential.accessToken);
-    }
+    // if (auth?.currentUser && !user) {
+    //   setUser(auth.currentUser);
+    // }
 
-    // auth?.onAuthStateChanged((authUser) => {
-    //   if (!user && authUser) {
-    //     setUser({
-    //       email: authUser.email,
-    //       displayName: authUser.displayName,
-    //       photoURL: authUser.photoURL,
-    //       uid: authUser.uid,
-    //     });
-    //   }
-    // });
-
-    // Get events
-    if (user) {
-      const col = collection(db, 'events');
-      const q = query(col, orderBy('date'));
-
-      onSnapshot(q, (snapshot) => {
-        const items = [];
-        snapshot.forEach((item) => {
-          items.push({ id: item.id, data: item.data() });
+    auth?.onAuthStateChanged((authUser) => {
+      if (!user && authUser) {
+        setUser({
+          email: authUser.email,
+          displayName: authUser.displayName,
+          photoURL: authUser.photoURL,
+          uid: authUser.uid,
         });
-        setEvents(items);
-      });
-    }
+        getEvents();
+      }
+    });
   }, [user, events]);
+
+  const getEvents = () => {
+    // Get events
+    const col = collection(db, 'events');
+    const q = query(col, orderBy('date'));
+    onSnapshot(q, (snapshot) => {
+      const items = [];
+      snapshot.forEach((item) => {
+        items.push({ id: item.id, data: item.data() });
+      });
+      setEvents(items);
+    });
+  };
+
+  const handleSignIn = () => {
+    signInWithPopup(auth, provider)
+      .then((result) => {
+        // The signed-in user info.
+        const { user } = result;
+        setUser(user);
+        getEvents();
+      })
+      .catch((error) => {
+        // Handle Errors here.
+        const { code, message, customData } = error;
+        // The email of the user's account used.
+        const { email } = customData;
+        // The AuthCredential type that was used.
+        const credential = GoogleAuthProvider.credentialFromError(error);
+        // ...
+        console.log(code, email, message, credential);
+      });
+  };
+
+  const handleSignOut = () => {
+    signOut(auth)
+      .then(() => {
+        // Sign-out successful.
+        setUser(null);
+      })
+      .catch((error) => {
+        // An error happened.
+        console.log(error);
+      });
+  };
 
   return (
     <main>
@@ -70,7 +100,7 @@ function App() {
               <button
                 type="button"
                 className="button-primary mb-0 ms-4"
-                onClick={() => logout()}>
+                onClick={() => handleSignOut()}>
                 Sign out
               </button>
             </>
@@ -78,7 +108,7 @@ function App() {
             <button
               type="button"
               className="button-primary mb-0 ms-4"
-              onClick={() => signInWithGoogle()}>
+              onClick={() => handleSignIn()}>
               Sign In
             </button>
           )}
