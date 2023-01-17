@@ -13,14 +13,9 @@ import './styles/App.scss';
 function App() {
   const provider = new GoogleAuthProvider();
   const [events, setEvents] = useState([]);
-  // const [token, setToken] = useState(null);
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    // if (auth?.currentUser && !user) {
-    //   setUser(auth.currentUser);
-    // }
-
     auth?.onAuthStateChanged((authUser) => {
       if (!user && authUser) {
         setUser({
