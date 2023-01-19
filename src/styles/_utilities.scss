@@ -1,3 +1,5 @@
+@use 'sass:map';
+
 // Utility classes
 .d-block {
   display: block;
@@ -5,6 +7,10 @@
 
 .d-inline-block {
   display: inline-block;
+
+  &.vertical-align-center {
+    vertical-align: middle;
+  }
 }
 
 .d-inline {
@@ -13,13 +19,45 @@
 
 .d-flex {
   display: flex;
-  justify-content: space-between;
+  gap: 10px;
+
+  &.justify-content-start {
+    justify-content: flex-start;
+  }
+
+  &.justify-content-end {
+    justify-content: flex-end;
+  }
+
+  &.justify-content-center {
+    justify-content: center;
+  }
+
+  &.justify-content-between {
+    justify-content: space-between;
+  }
+
+  &.justify-content-around {
+    justify-content: space-around;
+  }
+
+  &.align-items-center {
+    align-items: center;
+  }
 }
 
 .d-grid {
   display: grid;
   grid-column-gap: 15px;
   grid-row-gap: 15px;
+}
+
+.align-items-center {
+  align-items: center;
+}
+
+.grid-align-center {
+  align-items: center;
 }
 
 .w-auto {
@@ -60,4 +98,346 @@
 
 .text-center {
   text-align: center;
+}
+
+.text-uppercase {
+  text-transform: uppercase;
+}
+
+.text-muted {
+  opacity: 0.5;
+}
+
+// Padding/Margin Utilities
+$spacer: 1rem;
+$spacers: (
+  0: 0,
+  1: $spacer * 0.25,
+  2: $spacer * 0.5,
+  3: $spacer,
+  4: $spacer * 1.5,
+  5: $spacer * 3,
+);
+
+.p-0 {
+  padding: 0;
+}
+
+.p-1 {
+  padding: map.get($spacers, 1);
+}
+
+.p-2 {
+  padding: map.get($spacers, 2);
+}
+
+.p-3 {
+  padding: map.get($spacers, 3);
+}
+
+.p-4 {
+  padding: map.get($spacers, 4);
+}
+
+.px-0 {
+  padding-left: map.get($spacers, 0);
+  padding-right: map.get($spacers, 0);
+}
+
+.px-1 {
+  padding-left: map.get($spacers, 1);
+  padding-right: map.get($spacers, 1);
+}
+
+.px-2 {
+  padding-left: map.get($spacers, 2);
+  padding-right: map.get($spacers, 2);
+}
+
+.px-3 {
+  padding-left: map.get($spacers, 3);
+  padding-right: map.get($spacers, 3);
+}
+
+.px-4 {
+  padding-left: map.get($spacers, 4);
+  padding-right: map.get($spacers, 4);
+}
+
+.px-5 {
+  padding-left: map.get($spacers, 5);
+  padding-right: map.get($spacers, 5);
+}
+
+.py-0 {
+  padding-top: map.get($spacers, 0);
+  padding-bottom: map.get($spacers, 0);
+}
+
+.py-1 {
+  padding-top: map.get($spacers, 1);
+  padding-bottom: map.get($spacers, 1);
+}
+
+.py-2 {
+  padding-top: map.get($spacers, 2);
+  padding-bottom: map.get($spacers, 2);
+}
+
+.py-3 {
+  padding-top: map.get($spacers, 3);
+  padding-bottom: map.get($spacers, 3);
+}
+
+.py-4 {
+  padding-top: map.get($spacers, 4);
+  padding-bottom: map.get($spacers, 4);
+}
+
+.pt-0 {
+  padding-top: map.get($spacers, 0);
+}
+
+.pt-1 {
+  padding-top: map.get($spacers, 1);
+}
+
+.pt-2 {
+  padding-top: map.get($spacers, 2);
+}
+
+.pt-3 {
+  padding-top: map.get($spacers, 3);
+}
+
+.pt-4 {
+  padding-top: map.get($spacers, 4);
+}
+
+.pe-0 {
+  padding-right: map.get($spacers, 0);
+}
+
+.pe-1 {
+  padding-right: map.get($spacers, 1);
+}
+
+.pe-2 {
+  padding-right: map.get($spacers, 2);
+}
+
+.pe-3 {
+  padding-right: map.get($spacers, 3);
+}
+
+.pe-4 {
+  padding-right: map.get($spacers, 4);
+}
+
+.pb-0 {
+  padding-bottom: map.get($spacers, 0);
+}
+
+.pb-1 {
+  padding-bottom: map.get($spacers, 1);
+}
+
+.pb-2 {
+  padding-bottom: map.get($spacers, 2);
+}
+
+.pb-3 {
+  padding-bottom: map.get($spacers, 3);
+}
+
+.pb-4 {
+  padding-bottom: map.get($spacers, 4);
+}
+
+.ps-0 {
+  padding-left: map.get($spacers, 0);
+}
+
+.ps-1 {
+  padding-left: map.get($spacers, 1);
+}
+
+.ps-2 {
+  padding-left: map.get($spacers, 2);
+}
+
+.ps-3 {
+  padding-left: map.get($spacers, 3);
+}
+
+.ps-4 {
+  padding-left: map.get($spacers, 4);
+}
+
+// Margin
+.m-0 {
+  margin: 0;
+}
+
+.m-1 {
+  margin: map.get($spacers, 1);
+}
+
+.m-2 {
+  margin: map.get($spacers, 2);
+}
+
+.m-3 {
+  margin: map.get($spacers, 3);
+}
+
+.m-4 {
+  margin: map.get($spacers, 4);
+}
+
+.mx-auto {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.mx-0 {
+  margin-left: map.get($spacers, 0);
+  margin-right: map.get($spacers, 0);
+}
+
+.mx-1 {
+  margin-left: map.get($spacers, 1);
+  margin-right: map.get($spacers, 1);
+}
+
+.mx-2 {
+  margin-left: map.get($spacers, 2);
+  margin-right: map.get($spacers, 2);
+}
+
+.mx-3 {
+  margin-left: map.get($spacers, 3);
+  margin-right: map.get($spacers, 3);
+}
+
+.mx-4 {
+  margin-left: map.get($spacers, 4);
+  margin-right: map.get($spacers, 4);
+}
+
+.my-0 {
+  margin-top: map.get($spacers, 0);
+  margin-bottom: map.get($spacers, 0);
+}
+
+.my-1 {
+  margin-top: map.get($spacers, 1);
+  margin-bottom: map.get($spacers, 1);
+}
+
+.my-2 {
+  margin-top: map.get($spacers, 2);
+  margin-bottom: map.get($spacers, 2);
+}
+
+.my-3 {
+  margin-top: map.get($spacers, 3);
+  margin-bottom: map.get($spacers, 3);
+}
+
+.my-4 {
+  margin-top: map.get($spacers, 4);
+  margin-bottom: map.get($spacers, 4);
+}
+
+.mt-0 {
+  margin-top: map.get($spacers, 0);
+}
+
+.mt-1 {
+  margin-top: map.get($spacers, 1);
+}
+
+.mt-2 {
+  margin-top: map.get($spacers, 2);
+}
+
+.mt-3 {
+  margin-top: map.get($spacers, 3);
+}
+
+.mt-4 {
+  margin-top: map.get($spacers, 4);
+}
+
+.me-0 {
+  margin-right: map.get($spacers, 0);
+}
+
+.me-1 {
+  margin-right: map.get($spacers, 1);
+}
+
+.me-2 {
+  margin-right: map.get($spacers, 2);
+}
+
+.me-3 {
+  margin-right: map.get($spacers, 3);
+}
+
+.me-4 {
+  margin-right: map.get($spacers, 4);
+}
+
+.mb-0 {
+  margin-bottom: map.get($spacers, 0);
+}
+
+.mb-1 {
+  margin-bottom: map.get($spacers, 1);
+}
+
+.mb-2 {
+  margin-bottom: map.get($spacers, 2);
+}
+
+.mb-3 {
+  margin-bottom: map.get($spacers, 3);
+}
+
+.mb-4 {
+  margin-bottom: map.get($spacers, 4);
+}
+
+.ms-0 {
+  margin-left: map.get($spacers, 0);
+}
+
+.ms-1 {
+  margin-left: map.get($spacers, 1);
+}
+
+.ms-2 {
+  margin-left: map.get($spacers, 2);
+}
+
+.ms-3 {
+  margin-left: map.get($spacers, 3);
+}
+
+.ms-4 {
+  margin-left: map.get($spacers, 4);
+}
+
+// Floats. For the love of god please don't use these for layout
+.float-right {
+  float: right;
+  vertical-align: bottom;
+}
+
+// Image helpers
+.img-fluid {
+  max-width: 100%;
+  height: auto;
 }

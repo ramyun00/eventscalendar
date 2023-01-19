@@ -1,3 +1,7 @@
+.event-item {
+  margin-bottom: 2.5rem;
+}
+
 .event-item__header {
   padding: 20px;
 
@@ -17,7 +21,29 @@
   color: white;
   width: 102px;
   height: 120px;
-  margin-left: 30px;
+
+  &.event-item__date-container-sm {
+    width: 60px;
+    height: 80px;
+
+    .event-item__date-day {
+      font-size: 24px;
+      line-height: 28px;
+    }
+
+    .event-item__date-month {
+      font-size: 18px;
+      line-height: 20px;
+    }
+  }
+
+  .event-item__date-inside {
+    width: 100%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
 
   .event-item__date-dayname {
     display: block;

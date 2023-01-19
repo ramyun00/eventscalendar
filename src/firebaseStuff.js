@@ -27,4 +27,4 @@ if (process.env.NODE_ENV === 'development') {
   });
 }
 
-export { auth, db };
+export { db, auth };
